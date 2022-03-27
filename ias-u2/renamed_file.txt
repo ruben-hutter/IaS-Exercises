@@ -1,0 +1,2 @@
+This is a test file to check file transfer by SCP/sFTP!
+This line hs been added by a user logged in via SSH!
