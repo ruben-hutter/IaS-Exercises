@@ -184,10 +184,12 @@ The number of supported users lies in our choice of the chance with wich we allo
 *b)*
 
 *i)*
+
 The maximum achievable bandwith on the specified route is  limited by the proxy with the lowest traffic limit. As proxy D has a traffic limit of 512 KB/s this is equal to the maximum achievable bandwith.
 As 2 GB = 2'000 MB = 2'000'000 KB, we need (2'000'000 KB / 512 KB) = 3906.25 s = aprox 65 min 6s = 1 h 5 min 6s to transfer the 2 GB of data.
 
 *ii)*
+
 - processing delay
 - queueing delay
 - transmission delay
@@ -195,28 +197,36 @@ As 2 GB = 2'000 MB = 2'000'000 KB, we need (2'000'000 KB / 512 KB) = 3906.25 s =
 
 ## Exercise 4
 *a)*
+
 The following steps were necessary to setup ssh servers on both vms:
+
 - install openssh-server using `sudo apt install openssh-server` on Debian and `doas apk add openssh-server` on Alpine.
 - enable the ssh service at boot time using `doas rc-update add sshd`. On Debian, the service is enabled on boot by default so this step isn't required (in case it would be enabled by running `sudo systemctl enable --now sshd`).
 - start the service using `sudo service ssh start` on Debian and `doas service sshd start` on Alpine.
 
 *b)*
+
 Both VMs can be accessed using the command `ssh username@x.x.x.x` with x.x.x.x being the servers ip address.
 
 ## Exercise 5
 *a)*
-With our setups, VMs hypervised by QEMU on Arch Linux host, no changes to the config where necessary for an SSH connection from one VM to the other. Btw we use arch ;)
+
+With our setups, VMs hypervised by QEMU on Arch Linux host, no changes to the config where necessary for an SSH connection from one VM to the other. Btw we use Arch ;)
 
 *b)*
+
 To setup ssh key-pair based login we have to execute the following steps:
+
 - create a new key-pair using `ssh-keygen`.
 - enter a name for the new key-pair when prompted
 - transfer the public key to the server using `ssh-copy-id -i .ssh/keyname.pub user@x.x.x.x`.
 
 *c)*
+
 For Tobi everything worked out of the box. Ruben had to create the "~/.ssh/config" file and in that file specify parameters like User, HostName, IdentityFile, etc.
 
 *d)*
+
 - SCP/sFTP the text-file to either VM: `scp file.txt user@x.x.x.x:/home/user/`
 - use RPC to rename the file by executing `ssh user@x.x.x.x "mv /home/user/Documents/test_file.txt /home/user/Documents/renamed_file.txt"`.
 - login by SSH with `ssh user@x.x.x.x`. Then use the commands `cd directory` and `nano filename` to edit the file.
@@ -226,35 +236,43 @@ For Tobi everything worked out of the box. Ruben had to create the "~/.ssh/confi
 
 ## Exercise 6
 *a)*
+
 Arch (host):
+
 - Run the command `sudo pacman -Syu` to synchronize and update the packages database.
 - Install wireshark using `sudo pacman -S wireshark-cli wireshark-qt`.
 - Grant execution permission to non-root users by adding your user to the wireshark group, with `sudo usermod -aG wireshark USERNAME`.
 
 Debian:
+
 - Run the command `sudo apt update` to synchronize and update the packages database.
 - Install wireshark using `sudo apt install wireshark`.
 - During the installation you are prompted to select if you want also non-root users to execute certain commands; there select 'yes'.
 
 Alpine:
+
 - Enable community repositories by uncommenting '"https://<mirror-server>/alpine/<version>/community"' in the config file '/etc/apk/repositories', if not done during Alpine installation.
 - Run `doas apk update` to update the index of the available packages.
 - Install wireshark with `doas apk add wireshark`.
-- Add user to group wireshark, to execute commands without sudo privileges: `adduser USERNAME wireshark`.
+- Add user to group wireshark, to execute commands without root privileges: `adduser USERNAME wireshark`.
 
 *b)*
+
 Desktop environments on Linux use the X-Server (if not on Wayland) to communicate with the GUI. As this communication uses the internal network of the machine, the server can also be located on an entirely different machine like a ssh client accessing a server over a network that runs a gui application. The graphics are then rendered on the ssh client's X-Server according to the data of the ssh server.
 To use this X-forwarding the following steps are necessary:
-- In the config-file '/etc/ssh/sshd_config' on the ssh server, set the parameter 'X11Forwarding' to 'yes'
+
+- In the config-file '/etc/ssh/sshd\_config' on the ssh server, set the parameter 'X11Forwarding' to 'yes'
 - Now we can connect to the server by running 'ssh -X user@serveraddress' on the ssh client
 - Then we can launch a GUI application over the shell resulting in the gui being displayed in a window on our ssh client.
-- Alternatively we can directly connect and launch an application by using 'ssh -X user@serveraddress path_to_application'.
+- Alternatively we can directly connect and launch an application by using 'ssh -X user@serveraddress path\_to\_application'.
 
 ## Exercise 7
 *a)*
+
 Running wireshark as root is dangerous as every explit in the sofware ir running with administrator priviledges and can therefor acces and modify nearly everything on the machine.
 
 *b)*
+
 Debian:
 
 Alpine:
