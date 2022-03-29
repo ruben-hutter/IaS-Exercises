@@ -185,28 +185,32 @@ ii)
 ## Exercise 4
 a)
 The following steps were necessary to setup ssh servers on both vms:
-- install openssh-server using `sudo apt install openssh-server ` on Debian and `apk add openssh` on alpine.
-- enable the ssh service at boot time using `rc-update add sshd`. On Debian, the service is enabled on boot by default so this step isn't required on Debian.
-- start the service using `sudo service ssh start` on Debian and `service sshd start` on Alpine.
+- install openssh-server using `sudo apt install openssh-server` on Debian and `doas apk add openssh-server` on Alpine.
+- enable the ssh service at boot time using `doas rc-update add sshd`. On Debian, the service is enabled on boot by default so this step isn't required (in case it would be enabled by running `sudo systemctl enable --now sshd`).
+- start the service using `sudo service ssh start` on Debian and `doas service sshd start` on Alpine.
 
 b)
-Both VMs van be accessed using the command `ssh username@x.x.x.x` with x.x.x.x being the servers ip address.
+Both VMs can be accessed using the command `ssh username@x.x.x.x` with x.x.x.x being the servers ip address.
+
 ## Exercise 5
 a)
-With our setups, VMs hypervised by QEMU on arch linux host no changes to the config where necessary for a ssh connection from one VM to the other. btw we use arch.
+With our setups, VMs hypervised by QEMU on Arch Linux host, no changes to the config where necessary for an SSH connection from one VM to the other. Btw we use arch ;)
+
 b)
 To setup ssh key-pair based login we have to execute the following steps:
 - create a new key-pair using `ssh-keygen`.
 - enter a name for the new key-pair when prompted
-- transfer the public key to the server using `ssh-copy-id -i .ssh/keyname.pub user@192.168.122.62`.
+- transfer the public key to the server using `ssh-copy-id -i .ssh/keyname.pub user@x.x.x.x`.
+
 c)
-I didn't have to save anything as it worked out of the box xD
+For Tobi everything worked out of the box. Ruben had to create the "~/.ssh/config" file and in that file specify parameters like User, HostName, IdentityFile, etc.
+
 d)
-- SCP/sFTP the text-file to either VM: `scp file.txt tobi@192.168.122.62:/home/user/`
-- use RPC to rename the file by executing `ssh tobi@192.168.122.62 "mv /home/tobi/Documents/test_file.txt /home/tobi/Documents/renamed_file.txt"`.
-- login by SSH with `ssh tobi@192.168.122.62`. Then use the commands `cd directory` and `nano filename` to edit the file.
-- SCP/sFTP from the client to pull back the file using the command `scp file tobi@192.168.122.62:/home/tobi/Documents/renamed_file.txt /home/tobi/uni_basel/internet_and_security/ias-exercise-2/`.
-- copy files directly to the other one by using the command `scp tobi@ipaddress1:/path tobi@ipadress2:/path`.
+- SCP/sFTP the text-file to either VM: `scp file.txt user@x.x.x.x:/home/user/`
+- use RPC to rename the file by executing `ssh user@x.x.x.x "mv /home/user/Documents/test_file.txt /home/user/Documents/renamed_file.txt"`.
+- login by SSH with `ssh user@x.x.x.x`. Then use the commands `cd directory` and `nano filename` to edit the file.
+- SCP/sFTP from the client to pull back the file using the command `scp file user@x.x.x.x:/home/user/Documents/renamed_file.txt /home/user/uni_basel/internet_and_security/ias-exercise-2/`.
+- copy files directly to the other one by using the command `scp user@ipaddress1:/path user@ipadress2:/path`.
 - The -3 has the effect that "Copies between two remote hosts are transferred through the local host. Without this option the data is copied directly between the two remote hosts. Note that, when using the original SCP protocol (the default), this option selects batch mode for the second host as scp cannot ask for passwords or passphrases for both hosts. This mode is the default." (source: man scr)
 
 ## Exercise 6
