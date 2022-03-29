@@ -200,13 +200,47 @@ To setup ssh key-pair based login we have to execute the following steps:
 - enter a name for the new key-pair when prompted
 - transfer the public key to the server using `ssh-copy-id -i .ssh/keyname.pub user@192.168.122.62`.
 c)
-TODO...
+I didn't have to save anything as it worked out of the box xD
 d)
 - SCP/sFTP the text-file to either VM: `scp file.txt tobi@192.168.122.62:/home/user/`
 - use RPC to rename the file by executing `ssh tobi@192.168.122.62 "mv /home/tobi/Documents/test_file.txt /home/tobi/Documents/renamed_file.txt"`.
 - login by SSH with `ssh tobi@192.168.122.62`. Then use the commands `cd directory` and `nano filename` to edit the file.
 - SCP/sFTP from the client to pull back the file using the command `scp file tobi@192.168.122.62:/home/tobi/Documents/renamed_file.txt /home/tobi/uni_basel/internet_and_security/ias-exercise-2/`.
 - copy files directly to the other one by using the command `scp tobi@ipaddress1:/path tobi@ipadress2:/path`.
-- The -3 hs the effect that "Copies between two remote hosts are transferred through the local host. Without this option the data is copied directly between the two remote hosts. Note that, when using the original SCP protocol (the default), this option selects batch mode for the second host as scp cannot ask for passwords or passphrases for both hosts. This mode is the default." (source: man scr)
+- The -3 has the effect that "Copies between two remote hosts are transferred through the local host. Without this option the data is copied directly between the two remote hosts. Note that, when using the original SCP protocol (the default), this option selects batch mode for the second host as scp cannot ask for passwords or passphrases for both hosts. This mode is the default." (source: man scr)
 
+## Exercise 6
+a)
+Arch (host):
+- Run the command 'sudo pacman -Syu' to synchronize and update the packages database.
+- Install wireshark using 'sudo pacman -S wireshark-qt'.
+- Grant execution permission to '/usr/bin/dumpcap' by executing 'sudo chmod +x /usr/bin/dumpcap'.
+
+Debian:
+- Run the command 'sudo apt update' to synchronize and update the packages database.
+- Install wireshark using 'sudo apt install wireshark'.
+- Grant execution permission to '/usr/bin/dumpcap' by executing 'sudo chmod +x /usr/bin/dumpcap'.
+
+Alpine:
+- Enable community repositories by uncommenting '"https://<mirror-server>/alpine/<version>/community"' in the config file '/etc/apk/repositories'.
+- Run 'apk update' to update the index of the available packages.
+- Install wireshark with 'apk add wireshark'.
+- Grant execution permission to '/usr/bin/dumpcap' by executing 'sudo chod +x /usr/bin/dumpcap'. 
+
+b)
+Desktopenvironments on Linux use the X-Server to communicate with the GUI. As this communication uses the internal network of the machine, the server can also be located on an entirely different machine like a ssh client accessing a server over a network that runs a gui application. The graphics are then rendered on the ssh client's X-Server according to the data of the ssh server.
+To use this X-forwarding the following steps are necessary:
+- In the config-file '/etc/ssh/sshd_config' on the ssh server, set the parameter 'X11Forwarding' to 'yes'
+- Now we can connect to the server by running 'ssh -X user@serveraddress' on the ssh client
+- Then we can launch a gui application over the shell resulting in the gui being displayed in a window on our ssh client.
+- Alternatively we can directly connect and launch an application by using 'ssh -X user@serveraddress path_to_application'.
+
+## Exercise 7
+a)
+Running wireshark as root is dangerous as every explit in the sofware ir running with administrator priviledges and can therefor acces and modify nearly everything on the machine.
+
+b)
+Debian:
+
+Alpine:
 
