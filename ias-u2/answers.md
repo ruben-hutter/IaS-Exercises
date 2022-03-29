@@ -2,13 +2,15 @@
 ### Tobias Hafner, Ruben Hutter
 
 ## Exercise 1
-a) IP: 130.59.31.80
+*a)*
+
+IP: 130.59.31.80
 
 ADDRESS: CH-8021 Zürich
 
 OWNER: SWITCH-LAN 
 
-b)
+*b)*
 
 |Address |Ping |Browser |Comment|
 |---|---|---|---|
@@ -18,7 +20,7 @@ b)
 |www.amazon.com|yes|yes||
 
 ## Exercise 2
-i)
+*i)*
 
 ||56 byte|112 byte|224 byte|
 |---|---|---|---|
@@ -114,9 +116,11 @@ i)
 	rtt min/avg/max/mdev = 8.176/10.992/29.845/6.309 ms
 
 **Conclusion:**
+
 The packagesize doesn't seem to have a significant effect on the Round-Trip-Time.
 
-ii)
+*ii)*
+
 As "Sheldon's Office" is at CALTEC we use traceroute to find that there are 11 hops from unibas to www.caltec.edu.
 
 **Command and output:**
@@ -135,7 +139,8 @@ As "Sheldon's Office" is at CALTEC we use traceroute to find that there are 11 h
 	10  as13335.swissix.ch (91.206.52.192)  6.055 ms  6.529 ms  6.378 ms
 	11  104.18.14.60 (104.18.14.60)  5.724 ms  6.185 ms  5.262 ms
 
-iii)
+*iii)*
+
 - Los Angeles - CA - US
 - Los Angeles - CA - US
 - Los Angeles - CA - US
@@ -149,63 +154,69 @@ iii)
 
 The signal travels through the United States, the Netherlands and Switzerland.
 
-iv)
+*iv)*
+
 The three routes have the following hops in common:
-10.172.255.254
-10.36.253.6
-130.59.36.114
-130.59.36.69
-130.59.39.74
-192.168.122.1
-192.43.192.196
-62.40.124.21
+
+- 10.172.255.254
+- 10.36.253.6
+- 130.59.36.114
+- 130.59.36.69
+- 130.59.39.74
+- 192.168.122.1
+- 192.43.192.196
+- 62.40.124.21
 
 ## Exercise 3
-a)
+*a)*
+
 **Circuit Switching:**
+
 As an exclusive connection between each party is established the full individual bandwith of 2 MB/s is allocated for each user. Therefore the maximum amount of users is (10 MB/s)/(2 MB/s) = 5.
+
 **Packet Switching:**
+
 In the worst case, all users are active simultaneously. To ensure that our shared connection is never overloaded we can't support more than 5 users as 5\*(2 MB/s) = (10 MB/s).
 We can however allow a small chance of our connection to get overloaded, leading to delay and package drop. The chance that more than 5 users are active simultaneously can be calculated by the following formula:
 
 The number of supported users lies in our choice of the chance with wich we allow our shared connection to be overloaded.
 
-b)
+*b)*
 
-i)
+*i)*
 The maximum achievable bandwith on the specified route is  limited by the proxy with the lowest traffic limit. As proxy D has a traffic limit of 512 KB/s this is equal to the maximum achievable bandwith.
 As 2 GB = 2'000 MB = 2'000'000 KB, we need (2'000'000 KB / 512 KB) = 3906.25 s = aprox 65 min 6s = 1 h 5 min 6s to transfer the 2 GB of data.
 
-ii)
+*ii)*
 - processing delay
 - queueing delay
 - transmission delay
 - propagation delay
 
 ## Exercise 4
-a)
+*a)*
 The following steps were necessary to setup ssh servers on both vms:
 - install openssh-server using `sudo apt install openssh-server` on Debian and `doas apk add openssh-server` on Alpine.
 - enable the ssh service at boot time using `doas rc-update add sshd`. On Debian, the service is enabled on boot by default so this step isn't required (in case it would be enabled by running `sudo systemctl enable --now sshd`).
 - start the service using `sudo service ssh start` on Debian and `doas service sshd start` on Alpine.
 
-b)
+*b)*
 Both VMs can be accessed using the command `ssh username@x.x.x.x` with x.x.x.x being the servers ip address.
 
 ## Exercise 5
-a)
+*a)*
 With our setups, VMs hypervised by QEMU on Arch Linux host, no changes to the config where necessary for an SSH connection from one VM to the other. Btw we use arch ;)
 
-b)
+*b)*
 To setup ssh key-pair based login we have to execute the following steps:
 - create a new key-pair using `ssh-keygen`.
 - enter a name for the new key-pair when prompted
 - transfer the public key to the server using `ssh-copy-id -i .ssh/keyname.pub user@x.x.x.x`.
 
-c)
+*c)*
 For Tobi everything worked out of the box. Ruben had to create the "~/.ssh/config" file and in that file specify parameters like User, HostName, IdentityFile, etc.
 
-d)
+*d)*
 - SCP/sFTP the text-file to either VM: `scp file.txt user@x.x.x.x:/home/user/`
 - use RPC to rename the file by executing `ssh user@x.x.x.x "mv /home/user/Documents/test_file.txt /home/user/Documents/renamed_file.txt"`.
 - login by SSH with `ssh user@x.x.x.x`. Then use the commands `cd directory` and `nano filename` to edit the file.
@@ -214,7 +225,7 @@ d)
 - The -3 has the effect that "Copies between two remote hosts are transferred through the local host. Without this option the data is copied directly between the two remote hosts. Note that, when using the original SCP protocol (the default), this option selects batch mode for the second host as scp cannot ask for passwords or passphrases for both hosts. This mode is the default." (source: man scr)
 
 ## Exercise 6
-a)
+*a)*
 Arch (host):
 - Run the command `sudo pacman -Syu` to synchronize and update the packages database.
 - Install wireshark using `sudo pacman -S wireshark-cli wireshark-qt`.
@@ -231,7 +242,7 @@ Alpine:
 - Install wireshark with `doas apk add wireshark`.
 - Add user to group wireshark, to execute commands without sudo privileges: `adduser USERNAME wireshark`.
 
-b)
+*b)*
 Desktop environments on Linux use the X-Server (if not on Wayland) to communicate with the GUI. As this communication uses the internal network of the machine, the server can also be located on an entirely different machine like a ssh client accessing a server over a network that runs a gui application. The graphics are then rendered on the ssh client's X-Server according to the data of the ssh server.
 To use this X-forwarding the following steps are necessary:
 - In the config-file '/etc/ssh/sshd_config' on the ssh server, set the parameter 'X11Forwarding' to 'yes'
@@ -240,10 +251,10 @@ To use this X-forwarding the following steps are necessary:
 - Alternatively we can directly connect and launch an application by using 'ssh -X user@serveraddress path_to_application'.
 
 ## Exercise 7
-a)
+*a)*
 Running wireshark as root is dangerous as every explit in the sofware ir running with administrator priviledges and can therefor acces and modify nearly everything on the machine.
 
-b)
+*b)*
 Debian:
 
 Alpine:
