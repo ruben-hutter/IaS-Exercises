@@ -165,7 +165,7 @@ a)
 **Circuit Switching:**
 As an exclusive connection between each party is established the full individual bandwith of 2 MB/s is allocated for each user. Therefore the maximum amount of users is (10 MB/s)/(2 MB/s) = 5.
 **Packet Switching:**
-In the worst case, all users are active simultaneously. To ensure that our shared connection is never overloaded we can't support more than 5 users as 5*(2 MB/s) = (10 MB/s).
+In the worst case, all users are active simultaneously. To ensure that our shared connection is never overloaded we can't support more than 5 users as 5\*(2 MB/s) = (10 MB/s).
 We can however allow a small chance of our connection to get overloaded, leading to delay and package drop. The chance that more than 5 users are active simultaneously can be calculated by the following formula:
 
 The number of supported users lies in our choice of the chance with wich we allow our shared connection to be overloaded.
@@ -212,27 +212,27 @@ d)
 ## Exercise 6
 a)
 Arch (host):
-- Run the command 'sudo pacman -Syu' to synchronize and update the packages database.
-- Install wireshark using 'sudo pacman -S wireshark-qt'.
-- Grant execution permission to '/usr/bin/dumpcap' by executing 'sudo chmod +x /usr/bin/dumpcap'.
+- Run the command `sudo pacman -Syu` to synchronize and update the packages database.
+- Install wireshark using `sudo pacman -S wireshark-cli wireshark-qt`.
+- Grant execution permission to non-root users by adding your user to the wireshark group, with `sudo usermod -aG wireshark USERNAME`.
 
 Debian:
-- Run the command 'sudo apt update' to synchronize and update the packages database.
-- Install wireshark using 'sudo apt install wireshark'.
-- Grant execution permission to '/usr/bin/dumpcap' by executing 'sudo chmod +x /usr/bin/dumpcap'.
+- Run the command `sudo apt update` to synchronize and update the packages database.
+- Install wireshark using `sudo apt install wireshark`.
+- During the installation you are prompted to select if you want also non-root users to execute certain commands; there select 'yes'.
 
 Alpine:
-- Enable community repositories by uncommenting '"https://<mirror-server>/alpine/<version>/community"' in the config file '/etc/apk/repositories'.
-- Run 'apk update' to update the index of the available packages.
-- Install wireshark with 'apk add wireshark'.
-- Grant execution permission to '/usr/bin/dumpcap' by executing 'sudo chod +x /usr/bin/dumpcap'. 
+- Enable community repositories by uncommenting '"https://<mirror-server>/alpine/<version>/community"' in the config file '/etc/apk/repositories', if not done during Alpine installation.
+- Run `doas apk update` to update the index of the available packages.
+- Install wireshark with `doas apk add wireshark`.
+- Add user to group wireshark, to execute commands without sudo privileges: `adduser USERNAME wireshark`.
 
 b)
-Desktopenvironments on Linux use the X-Server to communicate with the GUI. As this communication uses the internal network of the machine, the server can also be located on an entirely different machine like a ssh client accessing a server over a network that runs a gui application. The graphics are then rendered on the ssh client's X-Server according to the data of the ssh server.
+Desktop environments on Linux use the X-Server (if not on Wayland) to communicate with the GUI. As this communication uses the internal network of the machine, the server can also be located on an entirely different machine like a ssh client accessing a server over a network that runs a gui application. The graphics are then rendered on the ssh client's X-Server according to the data of the ssh server.
 To use this X-forwarding the following steps are necessary:
 - In the config-file '/etc/ssh/sshd_config' on the ssh server, set the parameter 'X11Forwarding' to 'yes'
 - Now we can connect to the server by running 'ssh -X user@serveraddress' on the ssh client
-- Then we can launch a gui application over the shell resulting in the gui being displayed in a window on our ssh client.
+- Then we can launch a GUI application over the shell resulting in the gui being displayed in a window on our ssh client.
 - Alternatively we can directly connect and launch an application by using 'ssh -X user@serveraddress path_to_application'.
 
 ## Exercise 7
