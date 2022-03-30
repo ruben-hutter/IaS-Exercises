@@ -22,11 +22,11 @@ OWNER: SWITCH-LAN
 ## Exercise 2
 *i)*
 
-||56 byte|112 byte|224 byte|
+||min [ms]|average [ms]|max [ms]|
 |---|---|---|---|
-|min [ms]|8.204|9.646|17.084|
-|average [ms]|8.246|9.120|10.290|
-|max [ms]|8.176|10.992|29.849|
+|56 Byte|8.204|8.246|8.176|
+|112 Byte|9.646|9.120|10.992|
+|224 byte|17.084|10.290|29.849|
 
 **Command and output for 56 byte ping:**
 	
@@ -172,12 +172,14 @@ The three routes have the following hops in common:
 
 **Circuit Switching:**
 
-As an exclusive connection between each party is established the full individual bandwith of 2 MB/s is allocated for each user. Therefore the maximum amount of users is (10 MB/s)/(2 MB/s) = 5.
+As an exclusive connection between each party is established the full individual bandwith of 2 MB/s is allocated for each user. Therefore the maximum number of users is (10 MB/s)/(2 MB/s) = 5.
 
 **Packet Switching:**
 
 In the worst case, all users are active simultaneously. To ensure that our shared connection is never overloaded we can't support more than 5 users as 5\*(2 MB/s) = (10 MB/s).
-We can however allow a small chance of our connection to get overloaded, leading to delay and package drop. The chance that more than 5 users are active simultaneously can be calculated by the following formula:
+We can however allow a small chance of our connection to get overloaded, leading to delay and package drop. The chance that more than 5 users are active simultaneously can be calculated by the following formula with N being the amount of users in the network:
+
+$$P(n\geq5) = \sum_{i=5}^{N}\binom{N}{i}*0.35^i*(1-0.35)^{N-i}$$
 
 The number of supported users lies in our choice of the chance with wich we allow our shared connection to be overloaded.
 
