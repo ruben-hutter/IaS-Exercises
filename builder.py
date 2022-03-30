@@ -85,7 +85,10 @@ def push_github():
 
 	print('o Commit to git ...')
 	options = ['git', 'commit', '-m', '"autobuild by builder.py"']
-	return subprocess.check_call(options)
+	subprocess.check_call(options)
+	print('o Push to git ...')
+	options = ['git', 'push']
+	subprocess.check_call(options)
 
 if __name__ == "__main__":
 	# get directory the script was called from
