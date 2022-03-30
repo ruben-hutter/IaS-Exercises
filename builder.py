@@ -84,7 +84,7 @@ def push_github():
 	"""
 
 	print('o Commit to git ...')
-	options = ['git', 'commit', '-m', '"autobuild by builder.py"']
+	options = ['git', 'commit', '-m', 'autobuild by builder.py']
 	subprocess.check_call(options)
 	print('o Push to git ...')
 	options = ['git', 'push']
