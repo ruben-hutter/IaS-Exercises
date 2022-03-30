@@ -26,7 +26,7 @@ def crawl_directory(work_dir, en=-1):
 		ex_num = sub_dir[5:]
 		if (en!=-1 and ex_num!=en):
 			continue
-		print('Processing', sub_dir, '...')
+		print('>>> Processing', sub_dir, '...')
 		sub_path = os.path.join(work_dir, sub_dir)
 		md_path = os.path.join(sub_path, 'answers.md')
 		pdf_path = os.path.join(sub_path, 'answers.pdf')
@@ -47,7 +47,7 @@ def export_pdf(md_path, pdf_path):
 	If found the file is converted to pdf using pandoc.
 	The pandoc output is  saved in the passed directory.
 	"""
-	print('Converting markdown to pdf...')
+	print('o Converting markdown to pdf ...')
 	options = ['pandoc', md_path, '-o', pdf_path]
 	subprocess.check_call(options)
 	add_github(pdf_path)
@@ -59,7 +59,7 @@ def compress_directory(zip_path, sub_path, work_dir):
 	gets created. The archive itself is then stored in the specified
 	directory.
 	"""
-	print('Creating zip-file...')
+	print('o Creating zip-file...')
 	make_archive(zip_path, 'zip', sub_path)
 	move(os.path.join(work_dir, zip_path+'.zip'), os.path.join(sub_path, zip_path+'.zip'))
 	add_github(os.path.join(sub_path, zip_path+'.zip'))
@@ -72,6 +72,7 @@ def add_github(file):
 	git add <filname>.
 	"""
 
+	print('o Add to git ...')
 	options = ['git', 'add', file]
 	return subprocess.check_call(options)
 
@@ -82,6 +83,7 @@ def push_github():
 	Calls git commit -m and  git push to update the git repository.
 	"""
 
+	print('o Commit to git ...')
 	options = ['git', 'commit', '-m', '"autobuild by builder.py"']
 	return subprocess.check_call(options)
 
