@@ -16,6 +16,8 @@ def crawl_directory(work_dir, en=-1):
         the compression of the directoy itself an automatic push to github.
         """
 
+	pull_github()
+
 	if len(sys.argv) > 1:
 		en = sys.argv[1]
 
@@ -88,6 +90,15 @@ def push_github():
 	subprocess.check_call(options)
 	print('o Push to git ...')
 	options = ['git', 'push']
+	subprocess.check_call(options)
+
+def pull_github():
+	"""Pulls the current state of the repositiorx from the master
+
+        Calls git pull to update the local repository.
+        """
+	print('o Pull from git ...')
+	options = ['git', 'pull']
 	subprocess.check_call(options)
 
 if __name__ == "__main__":
