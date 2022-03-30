@@ -277,6 +277,7 @@ Accordingly to the wireshark wiki, under Security chapter: *"... That's not a go
 *b)*
 
 Like already explained in the installation steps, we had to add our user to the wireshark group, so that he is able to record traffic by using "/usr/bin/dumpcap".
+In Debian the packet manager opens an interactive shell, were you can choose this option during the installation.
 
 Arch and Debian:
 
@@ -286,4 +287,5 @@ Alpine:
 
 - `doas adduser USERNAME whireshark`
 
+## Exercise 8
 
