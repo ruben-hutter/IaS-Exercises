@@ -54,7 +54,7 @@ def export_pdf(md_path, pdf_path):
 	subprocess.check_call(options)
 	add_github(pdf_path)
 
-def compress_directory(zip_path, sub_path, work_dir):
+def compress_directory(zip_name, sub_path, work_dir):
 	"""Creates a zip archive of the passed directory.
 
 	A zip archive containing the content of the specified director
@@ -62,9 +62,14 @@ def compress_directory(zip_path, sub_path, work_dir):
 	directory.
 	"""
 	print('o Creating zip-file...')
-	make_archive(zip_path, 'zip', sub_path)
-	move(os.path.join(work_dir, zip_path+'.zip'), os.path.join(sub_path, zip_path+'.zip'))
-	add_github(os.path.join(sub_path, zip_path+'.zip'))
+	zip_path = os.path.join(sub_path, zip_name+'.zip')
+
+	if os.path.exists(zip_path):
+		os.remove(zip_path)
+
+	make_archive(zip_name, 'zip', sub_path)
+	move(os.path.join(work_dir, zip_name+'.zip'), zip_path)
+	add_github(zip_path)
 	return
 
 def add_github(file):
