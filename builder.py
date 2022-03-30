@@ -36,7 +36,7 @@ def crawl_directory(work_dir, en=-1):
 			export_pdf(md_path, pdf_path)
 
 		compress_directory(zip_path, sub_path, work_dir)
-
+	push_github();
 	print('Done.')
 	return
 
@@ -49,7 +49,8 @@ def export_pdf(md_path, pdf_path):
 	"""
 	print('Converting markdown to pdf...')
 	options = ['pandoc', md_path, '-o', pdf_path]
-	return subprocess.check_call(options)
+	subprocess.check_call(options)
+	add_github(pdf_path)
 
 def compress_directory(zip_path, sub_path, work_dir):
 	"""Creates a zip archive of the passed directory.
@@ -61,6 +62,7 @@ def compress_directory(zip_path, sub_path, work_dir):
 	print('Creating zip-file...')
 	make_archive(zip_path, 'zip', sub_path)
 	move(os.path.join(work_dir, zip_path+'.zip'), os.path.join(sub_path, zip_path+'.zip'))
+	add_github(os.path.join(sub_path, zip_path+'.zip'))
 	return
 
 def add_github(file):
@@ -70,7 +72,8 @@ def add_github(file):
 	git add <filname>.
 	"""
 
-	return
+	options = ['git', 'add', file]
+	return subprocess.check_call(options)
 
 def push_github():
 	"""A commit is created for the newly create files and then
@@ -79,6 +82,8 @@ def push_github():
 	Calls git commit -m and  git push to update the git repository.
 	"""
 
+	options = ['git', 'commit', '-m', '"autobuild by builder.py"']
+	return subprocess.check_call(options)
 
 if __name__ == "__main__":
 	# get directory the script was called from
