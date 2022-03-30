@@ -254,7 +254,7 @@ Alpine:
 - Enable community repositories by uncommenting '"https://<mirror-server>/alpine/<version>/community"' in the config file '/etc/apk/repositories', if not done during Alpine installation.
 - Run `doas apk update` to update the index of the available packages.
 - Install wireshark with `doas apk add wireshark`.
-- Add user to group wireshark, to execute commands without root privileges: `adduser USERNAME wireshark`.
+- Add user to group wireshark, to execute commands without root privileges: `doas adduser USERNAME wireshark`.
 
 *b)*
 
@@ -269,11 +269,19 @@ To use this X-forwarding the following steps are necessary:
 ## Exercise 7
 *a)*
 
-Running wireshark as root is dangerous as every explit in the sofware ir running with administrator priviledges and can therefor acces and modify nearly everything on the machine.
+Running wireshark as root is dangerous as every exploit in the sofware ir running with administrator priviledges and can therefor acces and modify nearly everything on the machine.
+Accordingly to the wireshark wiki, under Security chapter: *"... That's not a good idea, as using a root account makes any exploit far more dangerous: a successful exploit will have immediate control of the whole system, compromising it completely. ..."*.
 
 *b)*
 
-Debian:
+Like already explained in the installation steps, we had to add our user to the wireshark group, so that he is able to record traffic by using "/usr/bin/dumpcap".
+
+Arch and Debian:
+
+- `sudo usermod -aG wireshark USERNAME`
 
 Alpine:
+
+- `doas adduser USERNAME whireshark`
+
 
