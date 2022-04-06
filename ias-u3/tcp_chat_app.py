@@ -4,8 +4,8 @@ import tcp_chat
 
 def main(ip_addr, port):
 	client = Client(ip_addr, port)
-	client.listen()
-	client.write()
+	client.connect()
+	client.start_sender()
 
 if __name__ == "__main__":
 	if len(sys.argv) != 2:
