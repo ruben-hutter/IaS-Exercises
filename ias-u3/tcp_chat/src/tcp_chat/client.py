@@ -23,8 +23,26 @@ This call can be used with sockets and CLI In-/Output.
 - Do NOT use multiprocessing, asyncio or something alike. Such methods remove any
 guaranty of ordered input/output (order preservation).'''
 
-import socket
-from threading import Thread
+import Receiver
+import Sender
 
 class Client:
+	def __init__(self, r_ip_addr, r_port, listen_port):
+		# init sender
+		self.r_ip_addr = r_ip_addr
+		self.r_port = r_port
+		self.sender = Sender()
 
+		# init recevier
+		self.listen_port = listen_port
+		self.receiver = Receiver())
+
+	def connect():
+		# start listening for other senders and accept connections
+		self.receiver.listen_for_clients(listen_port)
+		# connect own sender to receiver
+		self.sender.connect(self.r_ip_addr, self.r_port)
+
+	def start_sender():
+		# start own sender
+		self.sender.start_sender()

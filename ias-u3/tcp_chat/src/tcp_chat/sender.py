@@ -13,5 +13,5 @@ class Sender:
 			msh = input()
 			if msg == ':q':
 				break
-			self.s_scoket.send(msg.encode())
+			self.s_socket.send(msg.encode())
 
