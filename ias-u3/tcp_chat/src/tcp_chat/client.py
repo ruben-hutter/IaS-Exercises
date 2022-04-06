@@ -1,4 +1,4 @@
-
+# code for client goes here
 ''' This module provides the functionality to listen for strings received on a tcp port and print it to CLI.
 
 Requirements to module:
@@ -27,33 +27,4 @@ import socket
 from threading import Thread
 
 class Client:
-	def __init__(self, ip_addr, port):
-		# store passed arguments about P2P connection  into fields
-		self.ip_addr = ip_addr
-		self.port = port
-		# create new socket
-		self.socket = socket.socket()
-		socket.connect((ip_addr, port))
-
-	def listen():
-		# create new deamon thread that listens to incoming messages
-                thread = Thread(target=listen_on_port)
-                thread.deamon = True
-                thread.start
-
-	def listen_on_port():
-		# listen for incomming messages and print to cli
-		while True:
-			msg = self.socket.recv(1024).decode()
-			print(msg)
-
-	def send():
-		while True:
-			# get message from cli
-			msg = input()
-			if msg.lower() == ':q':
-				break
-			socket.send(msg.encode())
-
-		socket.close()
 
