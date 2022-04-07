@@ -12,5 +12,5 @@ if __name__ == "__main__":
 	if len(sys.argv) == 3:
 		serv_ip_addr = sys.argv[1]
 		serv_port = int(sys.argv[2])
-		tcp_chat_client.launch(serv_ip_addr, serv_port)
+		udp_chat_client.launch(serv_ip_addr, serv_port)
 
