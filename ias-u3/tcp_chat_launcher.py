@@ -1,5 +1,5 @@
 # tcp chat driver code goes here
-import tcp_chat
+from tcp_chat import tcp_chat
 import sys
 
 if __name__ == "__main__":
