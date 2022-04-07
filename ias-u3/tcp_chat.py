@@ -9,11 +9,11 @@ def launch_server(serv_port):
 	serv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	serv_socket.bind(('0.0.0.0', serv_port))
 	# wait for client
-	print('Listening for clients on port', serv_port)
+	print('> Listening for clients on port', serv_port)
 	serv_socket.listen(1)
 	# create client socket
 	clnt_socket, clnt_addr = serv_socket.accept()
-	print('Client', clnt_addr, 'connected on port', serv_port, '.')
+	print('> Client', clnt_addr, 'conected.')
 	# start chat operations
 	run_chat(clnt_socket)
 
@@ -24,19 +24,21 @@ def launch_client(serv_addr, serv_port):
 	# try to connect to given server
 	clnt_socket.settimeout(15)
 	try:
-		print('Trying to connect to', serv_addr, ':', serv_port, '...')
+		print('> Trying to connect to', serv_addr, ':', serv_port, '...')
 		clnt_socket.connect((serv_addr, serv_port))
 		# successful -> start chat operations
+		print('> Connection established.')
 		run_chat(clnt_socket)
 	except socket.error:
-		print('Failed to connect to', serv_addr, ':', serv_port, '.')
-		print('Starting as server.')
+		print('> Failed to connect to', serv_addr, ':', serv_port, '.')
+		print('> Starting as server.')
 		# failed -> cotinue as server
 		launch_server(serv_port)
 
 def run_chat(clnt_socket):
 	sockets = [sys.stdin, clnt_socket]
-	while True:
+	should_run = True
+	while should_run:
 		# update list of readable sockets
 		readables, writables, errors = select.select(sockets, [], [])
 		# find and handle client socket
@@ -45,11 +47,17 @@ def run_chat(clnt_socket):
 				# receive data from socket
 				msg = socket.recv(1024)
 				if not msg:
-					sockets.remove(socket)
+					print('> Connection closed.')
+					should_run = False
+					break
 				else:
 					# ouput received message to cli
 					print(msg.decode())
 			else:
 				msg = sys.stdin.readline()
+				if msg == ':q\n':
+					print('> Closing connection...')
+					should_run = False
+					break
 				clnt_socket.send(msg.encode())
-		clnt_socket.close()
+	clnt_socket.close()
