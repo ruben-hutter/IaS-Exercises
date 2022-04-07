@@ -39,9 +39,9 @@ def negotiate_username(serv_ip_addr, serv_port):
 	while u_name == '':
 		while True:
 			# let user enter username
-			username = input('Enter your username (min length 4 without whitespaces):\n')
+			username = input('> Enter your username (min length 4 without whitespaces):\n')
 			# check if username is valid
-			if username != ' ' and len(username) > 3:
+			if not (' ' in username) and len(username) > 3:
 				# probable username found sent to server
 				break
 			print ('> Invalid username! Please try again.')
