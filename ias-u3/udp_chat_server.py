@@ -6,9 +6,13 @@ class prot:
 	user_leave = 'by'
 	addr_request = 'ar'
 	server_handshake = 'hi'
+	user_userlist = 'ul'
+	user_roomlist = 'rl'
+	user_roomcreate = 'rc'
+	user_roomjoin = 'rj'
 
 users = {}
-rooms = []
+rooms = {}
 serv_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # server launched on specified port
@@ -41,6 +45,70 @@ def parse_msg(clnt_msg, clnt_addr):
 			# existing user wants to leave server
 			send_msg(clnt_addr, prot.user_leave)
 			remove_user(clnt_addr)
+		case prot.addr_request:
+			# user requests address of user
+			if len(split_msg) == 2:
+				u_name = split_msg[1]
+				send_address(clnt_addr, u_name)
+		case prot.user_userlist:
+			# send userlist to user
+			send_userlist(clnt_addr)
+		case prot.user_roomlist:
+			# send roomlist to user
+			send_roomlist(clnt_addr)
+		case prot.user_roomcreate:
+			# cereat new room
+			if len(split_msg) == 2:
+				add_room(clnt_addr, split_msg[1])
+		case prot.user_roomjoin:
+			if len(split_msg) == 2:
+				join_room(clnt_addr, split_msg[1])
+
+# add user to specified room
+def join_room(clnt_addr, r_name):
+	if not r_name in rooms:
+		# invalid room name
+		send_msg(clnt_addr, prot.user_roomjoin)
+		return
+	# valid room name
+	# remove client from all rooms
+	for room in rooms:
+		if clnt_addr in rooms[room]:
+			rooms[room].remove(clnt_addr)
+	# clear peer list of client
+	send_msg(clnt_addr, prot.user_roomjoin+' __clear_peers__')
+	# add user to room
+	rooms[r_name].append(clnt_addr)
+	# send peer addresses
+	for addr in rooms[r_name]:
+		if addr != clnt_addr:
+			send_msg(clnt_addr, prot.user_roomjoin+' '+addr[0]+' '+str(addr[1]))
+
+# adds new room and adds user to this room
+def add_room(clnt_addr, r_name):
+	if r_name in rooms:
+		# room already exists
+		send_msg(clnt_addr, prot.user_roomcreate)
+		return
+	# create room
+	rooms[r_name] = []
+	send_msg(clnt_addr, prot.user_roomcreate+' '+r_name)
+
+# send userlist to requesting user
+def send_userlist(clnt_addr):
+	if len(users)  == 0:
+		send_msg(clnt_addr, prot.user_userlist)
+		return
+	for key in users.keys():
+		send_msg(clnt_addr, prot.user_userlist + ' ' + key)
+
+# send roomlist to requesting user
+def send_roomlist(clnt_addr):
+	if not rooms:
+		send_msg(clnt_addr, prot.user_roomlist)
+		return
+	for room in rooms.keys():
+		send_msg(clnt_addr, prot.user_roomlist + ' ' + room)
 
 # send message as text to specified receiver
 def send_msg(clnt_addr, serv_msg):
@@ -70,3 +138,13 @@ def remove_user(clnt_addr):
 			break
 	del users[del_name]
 	print('Removed user: '+u_name)
+
+# send the address of the user name to the client
+def send_address(clnt_addr, u_name):
+	# user exists -> gett addr and send to client
+	if u_name in users:
+		u_addr = users[u_name]
+		send_msg(clnt_addr, prot.addr_request+' '+u_addr[0]+' '+str(u_addr[1]))
+		return
+	# usere doesn't exist -> inform client
+	send_msg(clnt_addr, prot.addr_request)
