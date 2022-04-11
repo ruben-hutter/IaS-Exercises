@@ -90,95 +90,94 @@ def parse_msg(addr, msg):
 	split_msg = msg.decode().split()
 	command = split_msg[0]
 
-	match command:
-		case prot.server_addr_request:
-			# requested user doesn't exist
-			if len(split_msg) ==  1:
-				print("> Requested user doesn't exist.")
-				return
-			# user exists -> establish conection
-			add_peer((split_msg[1],int(split_msg[2])))
-		case prot.server_userlist:
-			# no users online
-			if len(split_msg) == 1:
-				print('> No users online.')
-				return
-			# print users to cmd
-			if len(split_msg) == 2:
-				print('- ' + split_msg[1])
-		case prot.server_roomlist:
-			# no rooms available
-			if len(split_msg) == 1:
-				print('> There are no rooms on this server. Create on with $roomcreate <roomname>.')
-				return
-			# print roomlist to cmd
-			if len(split_msg) == 2:
-				print('- ' + split_msg[1])
-		case prot.server_roomcreate:
-			# if invalid request
-			if len(split_msg) == 1:
-				print('> Room already exists.')
-				return
-			if len(split_msg) == 2:
-				print('> Room created successfully.')
-		case prot.server_roomjoin:
-			# room doesn't exist
-			if len(split_msg) == 1:
-				print('No room with this name found.')
-				return
-			if split_msg[1] == '__clear_peers__':
-				peers.clear()
-				return
-			add_peer((split_msg[1], int(split_msg[2])))
-		case prot.message:
-			# message to print to cli
-			if len(split_msg) == 1:
-				# empty message -> ignore
-				return
-			if not addr in peers and not peers :
-				add_peer(addr)
-			print(' '.join(split_msg[1:]))
+	if command == prot.server_addr_request:
+		# requested user doesn't exist
+		if len(split_msg) ==  1:
+			print("> Requested user doesn't exist.")
+			return
+		# user exists -> establish conection
+		add_peer((split_msg[1],int(split_msg[2])))
+	elif command == prot.server_userlist:
+		# no users online
+		if len(split_msg) == 1:
+			print('> No users online.')
+			return
+		# print users to cmd
+		if len(split_msg) == 2:
+			print('- ' + split_msg[1])
+	elif command == prot.server_roomlist:
+		# no rooms available
+		if len(split_msg) == 1:
+			print('> There are no rooms on this server. Create on with $roomcreate <roomname>.')
+			return
+		# print roomlist to cmd
+		if len(split_msg) == 2:
+			print('- ' + split_msg[1])
+	elif command == prot.server_roomcreate:
+		# if invalid request
+		if len(split_msg) == 1:
+			print('> Room already exists.')
+			return
+		if len(split_msg) == 2:
+			print('> Room created successfully.')
+	elif command == prot.server_roomjoin:
+		# room doesn't exist
+		if len(split_msg) == 1:
+			print('No room with this name found.')
+			return
+		if split_msg[1] == '__clear_peers__':
+			peers.clear()
+			return
+		add_peer((split_msg[1], int(split_msg[2])))
+	elif command == prot.message:
+		# message to print to cli
+		if len(split_msg) == 1:
+			# empty message -> ignore
+			return
+		if not addr in peers and not peers :
+			add_peer(addr)
+		print(' '.join(split_msg[1:]))
 
 # parse user commands
 def parse_cmd(cmd):
 	# split  into tokens
 	split_cmd = cmd.split()
 	command = split_cmd[0]
-	# match commands
-	match command:
-		case clnt_cmd.server_list_rooms:
-			# request room list from server
-			send_msg(serv_addr, prot.server_roomlist)
-		case clnt_cmd.server_list_users:
-			# request client list from server
-			send_msg(serv_addr, prot.server_userlist)
-		case clnt_cmd.client_poke:
-			# poke user with certain username
-			if len(split_cmd) == 2:
-				send_msg(serv_addr, prot.server_addr_request+' '+split_cmd[1])
-			else:
-				print ('> Invalid args! Usage: $poke <username>')
-		case clnt_cmd.client_kick:
-			# throw users out of peers list
-			peers.clear()
-			print('> Removed all peers.')
-		case clnt_cmd.server_create_room:
-			# request room creation on server
-			if len(split_cmd) == 2:
-				send_msg(serv_addr, prot.server_roomcreate+' '+split_cmd[1])
-			else:
-				print('> Invalis args! Usage: $roomcreate <roomname>')
-		case clnt_cmd.server_join_room:
-			# request joining a room
-			if len(split_cmd) == 2:
-				send_msg(serv_addr, prot.server_roomjoin+' '+split_cmd[1])
-			else:
-				print('> Invalid args! Usage: $roomjoin <roomname>')
-		case clnt_cmd.server_leave_room:
-			# leave room
-			send_msg(serv_addr, prot.server_roomleave)
-		case _:
-			print('> " '+command+' is not a valid command.')
+
+	if command == clnt_cmd.server_list_rooms:
+		# request room list from server
+		send_msg(serv_addr, prot.server_roomlist)
+	elif command == clnt_cmd.server_list_users:
+		# request client list from server
+		send_msg(serv_addr, prot.server_userlist)
+	elif command == clnt_cmd.client_poke:
+		# poke user with certain username
+		if len(split_cmd) == 2:
+			send_msg(serv_addr, prot.server_addr_request+' '+split_cmd[1])
+		else:
+			print ('> Invalid args! Usage: $poke <username>')
+	elif command == clnt_cmd.client_kick:
+		# throw users out of peers list
+		peers.clear()
+		print('> Removed all peers.')
+	elif command == clnt_cmd.server_create_room:
+		# request room creation on server
+		if len(split_cmd) == 2:
+			send_msg(serv_addr, prot.server_roomcreate+' '+split_cmd[1])
+		else:
+			print('> Invalis args! Usage: $roomcreate <roomname>')
+	elif command == clnt_cmd.server_join_room:
+		# request joining a room
+		if len(split_cmd) == 2:
+			send_msg(serv_addr, prot.server_roomjoin+' '+split_cmd[1])
+		else:
+			print('> Invalid args! Usage: $roomjoin <roomname>')
+	elif command == clnt_cmd.server_leave_room:
+		# leave room
+		send_msg(serv_addr, prot.server_roomleave)
+	else:
+		# invalid command
+		print('> " '+command+' is not a valid command.')
 
 # negotiate a username with the server
 def negotiate_username(serv_addr):
