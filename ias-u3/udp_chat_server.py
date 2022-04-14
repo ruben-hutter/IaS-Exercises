@@ -75,14 +75,15 @@ def join_room(clnt_addr, r_name):
 	for room in rooms:
 		if clnt_addr in rooms[room]:
 			rooms[room].remove(clnt_addr)
-	# clear peer list of client
-	send_msg(clnt_addr, prot.user_roomjoin+' __clear_peers__')
-	# add user to room
+	# add user to new room
 	rooms[r_name].append(clnt_addr)
-	# send peer addresses
-	for addr in rooms[r_name]:
-		if addr != clnt_addr:
-			send_msg(clnt_addr, prot.user_roomjoin+' '+addr[0]+' '+str(addr[1]))
+	# update peer list of all memebrs
+	for member in rooms[r_name]:
+		send_msg(member, prot.user_roomjoin+' __clear_peers__')
+		# send peer addresses
+		for addr in rooms[r_name]:
+			if addr != member:
+				send_msg(member, prot.user_roomjoin+' '+addr[0]+' '+str(addr[1]))
 
 # adds new room and adds user to this room
 def add_room(clnt_addr, r_name):
