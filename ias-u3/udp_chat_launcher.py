@@ -1,6 +1,6 @@
 # udp chat driver code goes here
-import udp_chat_server
-import udp_chat_client
+from udp_chat import udp_chat_server
+from udp_chat import udp_chat_client
 import sys
 
 if __name__ == "__main__":
