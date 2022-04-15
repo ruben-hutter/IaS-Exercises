@@ -134,7 +134,7 @@ def parse_msg(addr, msg):
 		if len(split_msg) == 1:
 			# empty message -> ignore
 			return
-		if not addr in peers and not peers :
+		if addr not in peers and not peers :
 			add_peer(addr)
 		print(' '.join(split_msg[1:]))
 
@@ -188,7 +188,7 @@ def negotiate_username(serv_addr):
 			# let user enter username
 			username = input('> Enter your username (min length 4 without whitespaces):\n')
 			# check if username is valid
-			if not (' ' in username) and len(username) > 3:
+			if (' ' not in username) and len(username) > 3:
 				# probable username found sent to server
 				break
 			print ('> Invalid username! Please try again.')
