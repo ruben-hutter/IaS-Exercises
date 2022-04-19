@@ -30,12 +30,19 @@ When you are connected to the server, you can request a userlist, a roomlist, yo
 In order to run this commands, just prepend `$` to the command (ex. `$userlist`).
 
 ### Task 3b)
-With the command: `$userlist` you get the list of participants.
-TODO rest of answer...
+With the command: `$userlist` you get the list of participants. It would be implemented in the "network" level, because you are routing some datagrams from a source to a destination.
 
 ## Task 4 - Network Analysis
 ### a)
-TODO insert screenshot of collected traffic of tcp and udp chat application.
+
+![](tcp-1.jpg)
+
+![](udp-1.jpg)
 
 ### b)
+**TCP**: Initialising the two peers you first see a *SYN* message, that initiates and establishes the connection, followed by an *ACK* message, that confirms to the other side that it has received the *SYN*. The *SYN, ACK* is a *SYN* from local device, and *ACK* of the earlier packet. In the end, when the peers terminate the communication, the *FIN* message is sent. All this messages belong to the transport/nework level. The data are processed, but not needed to be sent to the application level.
+You can see for the chat messages the flag *PSH*, that means "pushing". It refers to the fact that the messages are pushed directly from or to the buffer (depending if it's receiver or sender side) and than to the Application level, without waiting for additional data. This packets are sent to the application level, so that the different clients can read messages and send back some others.
 
+**UDP**: No handshaking between UDP sender-receiver! All the sent packeges are transmitted from the network, to the transport and the application level. The packages captured by wireshark with a datagram like "ul, rl, ..." are than handled by the application level with an intern protocol. The normal messages are displayed in the chat application as in the tcp-chat.
+
+The packages begin with the header segment, similar in the style, but not always the same, and in the end is the data segment. You can also see how the datas are splitted (ex. "hi fro m alpine" sent in the tcp example). In addition, in tcp a line feed is appent to the message.

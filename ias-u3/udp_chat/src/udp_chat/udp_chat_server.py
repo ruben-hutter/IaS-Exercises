@@ -96,7 +96,7 @@ def add_room(clnt_addr, r_name):
 
 # send userlist to requesting user
 def send_userlist(clnt_addr):
-	if len(users)  == 0:
+	if len(users) == 0:
 		send_msg(clnt_addr, prot.user_userlist)
 		return
 	for key in users.keys():
