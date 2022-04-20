@@ -1,11 +1,25 @@
 # example network configuration as Task1 b
-# format: <node>:<ipaddr:port>:<peer, dist>,...
-Node1:127.0.0.1:5001:2 5,3 2
-Node2:127.0.0.1:5002:5 2,4 5
-Node3:127.0.0.1:5003:1 2,5 2
-Node4:127.0.0.1:5004:2 5,7 5,8 2,6 1
-Node5:127.0.0.1:5005:1 5, 2 2, 3 2
-Node6:127.0.0.1:5006:4 1,8 1,9 2
-Node7:127.0.0.1:5007:4 5,8 2
-Node8:127.0.0.1:5008:4 2,7 2,6 1,9 1
-Node9:127.0.0.1:5009:6 2,8 1
+# always declare all peers first using "addr" and then declare the links using "links"
+
+# peer addresses. format: addr<peer_id>:<ip_addr>:<port>
+addr1:127.0.0.1:5001
+addr2:127.0.0.1:5002
+addr3:127.0.0.1:5003
+addr4:127.0.0.1:5004
+addr5:127.0.0.1:5005
+addr6:127.0.0.1:5006
+addr7:127.0.0.1:5007
+addr8:127.0.0.1:5008
+addr9:127.0.0.1:5009
+
+# peer links. format: link<peer_id>:<peer_id rtt,...>
+link1:2 5,3 2
+link2:5 2,4 5
+link3:1 2,5 2
+link4:2 5,7 5,8 2,6 1
+link5:1 5,2 2,3 2
+link6:4 1,8 1,9 2
+link7:4 5,8 2
+link8:4 2,7 2,6 1,9 1
+link9:6 2,8 1
+
