@@ -1,1 +1,9 @@
 # control node code goes here...
+
+# build network from config
+def build_network(config, start_node, end_node):
+	# parse config...
+	# for every node...
+		# get node specific params
+		# launch node
+
