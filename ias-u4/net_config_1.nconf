@@ -1,11 +1,11 @@
 # example network configuration as Task1 b
 # format: <node>,<peer, dist>,...
-Node1,2 5,3 2
-Node2,4 5,5 2
-Node3,5 2
-Node4,7 5,8 2,6 1
-Node5,
-Node6,8 1,9 2
-Node7,8 2
-Node8,
-Node9,8 1
+Node1:2 5,3 2
+Node2:5 2,4 5
+Node3:1 2,5 2
+Node4:2 5,7 5,8 2,6 1
+Node5:1 5, 2 2, 3 2
+Node6:4 1,8 1,9 2
+Node7:4 5,8 2
+Node8:4 2,7 2,6 1,9 1
+Node9:6 2,8 1
