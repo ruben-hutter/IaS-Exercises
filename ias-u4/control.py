@@ -5,7 +5,7 @@ class Controller:
 	# update the networks topology according to the passed config file
 	def topology_update(config_file):
 		# read config and update peers
-		parser.parse_file(confilg_file, sender)
+		parser.parse_file(config_file, sender)
 
 # protocol message prefixes
 class Protocol:
