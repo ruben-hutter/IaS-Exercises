@@ -63,7 +63,13 @@ def parse_ntu(ntu_tokens):
 
 # process message
 def parse_msg(message_tokens):
-
+	if message_tokens[2] == node_id:
+		msg = ' '.join(message_tokens[3:]
+		print(f'Message received from node {message_tokens[1]}:')
+		print(msg)
+		return
+	message_tokens[1] = node_id
+	forward_msg(':'.join(message_tokens))
 
 # protocol message prefixes
 class Protocol:
