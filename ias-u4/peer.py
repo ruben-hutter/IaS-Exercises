@@ -1,4 +1,5 @@
 # peer node code goes here...
+from ipaddress import ip_address
 import socket
 
 # protocol message prefixes
@@ -14,16 +15,15 @@ class Routing:
 	NO_HOP = ''
 
 	node_id = '' # id of this node
-	peer_addr = {} # 
-	routing_table = {} # {dest_id:[ttr, next_hop], ...}
+	peer_addr = {} # {id:(ip,port), ...}
+	routing_table = {} # {dest_id:[rtt, next_hop], ...}
 
 	# add entry to routing table
 	@staticmethod
 	def add_route(dest_id):
 		routing_table[dest_id] = [INFINITE, NO_HOP]
 
-	# returns the RTT to destination
-	# returns Routing.INFINITE if no route found
+	# returns the RTT to destination, or Routing.INFINITE
 	@staticmethod
 	def get_rtt(dest_id):
 		return routing_table[dest_id][0]
@@ -33,8 +33,7 @@ class Routing:
 	def set_rtt(dest_id, rtt):
 		routing_table[dest_id][0] = rtt
 
-	# return next hop to destination
-	# return ROUTING.NO_HOP if no route found
+	# return next hop to destination, or ROUTING.NO_HOP
 	@staticmethod
 	def get_next_hop(dest_id):
 		return routing_table[dest_id][1]
@@ -80,30 +79,37 @@ def parse_input(message):
 
 # run ntu
 def parse_ntu(ntu_tokens):
+	# clear old routing table
+	Routing.routing_table.clear()
 	# process peer names
-	names = ntu_tokens[0].split()
+	names = ntu_tokens[2].split(' ') # ["name1", ...]
 	for name in names:
 		# empty string
-		if not name or not name.strip():
+		if not name.strip():
 			continue
-		Routing.add_route(name)
+		Routing.add_route(name.strip())
+
 	# process peer addresses
-	addrs = ntu_tokens[1].split()
+	addrs = ntu_tokens[3].split(' ') # ["id1_ip1_port1", ...]
 	for addr in addrs:
 		# empty string
-		if not addr or not addr.strip():
+		if not addr.strip():
 			continue
-		addr_tokens = addr.split('_')
+		addr_tokens = addr.split('_') # ["id", "ip", "port"]
 		# add peer addr to peer addresses
-		Routing.peer_addr[addr_tokens[0]] = (addr_tokens[1],int(addr_tokens[2]))
+		ip_address = addr_tokens[1]
+		port = int(addr_tokens[2])
+		Routing.peer_addr[addr_tokens[0]] = (ip_address, port)
+
 	# process peer links
-	links = ntu_tokens[2]
-	for link in links.split(','):
+	links = ntu_tokens[4].split(',') # ["name1 ttr1", ...]
+	for link in links:
 		# empty string
-		if not link or not link.strip():
+		if not link.strip():
 			continue
-		dest_id  = link.split(',')[0]
-		rtt = link.split(',')[1]
+		link_tokens = link.split(' ')
+		dest_id = link_tokens[0]
+		rtt = int(link_tokens[1])
 		Routing.set_rtt(dest_id, rtt)
 
 # process message
