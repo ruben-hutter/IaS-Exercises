@@ -1,6 +1,7 @@
 # peer node code goes here...
 from ipaddress import ip_address
 import socket
+from this import d
 
 # protocol message prefixes
 class Protocol:
@@ -15,7 +16,7 @@ class Routing:
 	NO_HOP = ''
 
 	node_id = '' # id of this node
-	peer_addr = {} # {id:(ip,port), ...}
+	peer_addr = {} # {dest_id:(ip,port), ...}
 	routing_table = {} # {dest_id:[rtt, next_hop], ...}
 
 	# add entry to routing table
@@ -31,7 +32,7 @@ class Routing:
 	# set rtt to destination
 	@staticmethod
 	def set_rtt(dest_id, rtt):
-		routing_table[dest_id][0] = rtt
+		routing_table[dest_id][0] = int(rtt)
 
 	# return next hop to destination, or ROUTING.NO_HOP
 	@staticmethod
@@ -81,6 +82,8 @@ def parse_input(message):
 def parse_ntu(ntu_tokens):
 	# clear old routing table
 	Routing.routing_table.clear()
+	# process this peer's id
+	Routing.node_id = ntu_tokens[1]
 	# process peer names
 	names = ntu_tokens[2].split(' ') # ["name1", ...]
 	for name in names:
@@ -124,7 +127,22 @@ def parse_msg(message_tokens):
 
 # process nu
 def parse_nu(nu_tokens):
-	return
+	# origin of nu
+	origin_id = nu_tokens[1]
+	links = nu_tokens[2].split(',') # ["name1 rtt1", ...]
+	for link in links:
+		link_tokens = link.split(' ')
+		dest_id = link_tokens[0]
+		rtt = int(link_tokens[1])
+		bellman_ford(origin_id, dest_id, rtt)
+
+# Bellman–Ford algorithm
+def bellman_ford(origin_id, dest_id, rtt):
+	actual_rtt = Routing.routing_table[dest_id][0]
+	min_rtt = min(actual_rtt, Routing.routing_table[origin_id] + int(rtt))
+	if min_rtt < actual_rtt:
+		Routing.routing_table[dest_id][0] = min_rtt
+		Routing.routing_table[dest_id][1] = origin_id
 
 '''
 TODO
