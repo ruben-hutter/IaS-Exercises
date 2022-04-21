@@ -13,9 +13,9 @@ class Routing:
 	INFINITE = -1
 	NO_HOP = ''
 
-	node_id = ''
-	peer_addr = {}
-	routing_table = {}
+	node_id = '' # id of this node
+	peer_addr = {} # 
+	routing_table = {} # {dest_id:[ttr, next_hop], ...}
 
 	# add entry to routing table
 	@staticmethod
@@ -94,7 +94,7 @@ def parse_ntu(ntu_tokens):
 		if not addr or not addr.strip():
 			continue
 		addr_tokens = addr.split('_')
-		# add peer addr to peer addersses
+		# add peer addr to peer addresses
 		Routing.peer_addr[addr_tokens[0]] = (addr_tokens[1],int(addr_tokens[2]))
 	# process peer links
 	links = ntu_tokens[2]
@@ -119,7 +119,6 @@ def parse_msg(message_tokens):
 # process nu
 def parse_nu(nu_tokens):
 	return
-
 
 '''
 TODO
