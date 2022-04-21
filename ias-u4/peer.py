@@ -28,10 +28,10 @@ def parse_input(message):
 	message = message.decode()
 	if message.startswith(Protocol.TOPOLOGY_UPDATE):
 		parse_ntu(message.split(':'))
-		continue
+		return
 	if message.startswith(Protocol.MESSAGE):
 		parse_message(message.split(':'))
-		continue
+		return
 
 # run ntu
 def parse_ntu(ntu_tokens):

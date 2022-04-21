@@ -3,9 +3,10 @@ import socket
 
 class Controller:
 	# update the networks topology according to the passed config file
+	@staticmethod
 	def topology_update(config_file):
 		# read config and update peers
-		parser.parse_file(config_file)
+		Parser.parse_file(config_file)
 
 # protocol message prefixes
 class Protocol:
@@ -19,7 +20,27 @@ class Commands:
 
 # parser to parse input files
 class Parser:
+	# send links and peer addresses to specified peer
+	@staticmethod
+	def send_topology_update(peer_id, peer_links):
+		message = Protocol.TOPOLOGY_UPDATE+':'
+		# append node id
+		message.append(peer_id)
+		# send names of nodes
+		for peer_name in Sender.peer_addresses.keys():
+			message.append(' ' + peer_name)
+		message.append(':')
+		# send ip addr of links
+		for peer in peer_links.split(',').split(' ')[0]:
+			message.append(' '.join('_'.join([peer, Sender.get_peer(peer[0]), Sender.get_peer(peer[1])])))
+		message.append(':')
+		# send links
+		message.append(peer_links)
+		# send message to peer
+		Sender.send_msg(peer_id, message)
+
 	# parse the config file
+	@staticmethod
 	def parse_file(file):
 		# open file
 		config = open(file)
@@ -36,7 +57,7 @@ class Parser:
 				# get port
 				peer_port = line[2]
 				# write addr to dict
-				sender.add_peer(peer_id, peer_addr, peer_port)
+				Sender.add_peer(peer_id, peer_addr, peer_port)
 				continue
 			# line is link declaration
 			if line.startswith('link'):
@@ -47,65 +68,49 @@ class Parser:
 				# get links
 				peer_links = line[1]
 				send_topology_update(peer_id, peer_links)
-				continue
-
-
-	# send links and peer addresses to specified peer
-	def send_topology_update(peer_id, peer_links):
-		message = Protocol.TOPOLOGY_UPDATE+':'
-		# append node id
-		message.append(peer_id)
-		# send names of nodes
-		for peer_name in peer_addresses.keys():
-			message.append(' ' + peer_name)
-		message.append(':')
-		# send ip addr of links
-		for peer in peer_links.split(',').split(' ')[0]
-			message.append(' '.join('_'.join([peer, sender.get_peer(peer[0]), sender.get_peer(peer[1])])))
-		message.append(':')
-		# send links
-		message.append(peer_links)
-		# send message to peer
-		sender.send_msg(peer_id, message)
 
 # sends messages over tcp
 class Sender:
 	peer_addresses = {}
 
 	# return a peers address
+	@staticmethod
 	def get_peer(peer_id):
 		return peer_addresses[peer_id]
 
 	# adds a peer to the peer list
+	@staticmethod
 	def add_peer(peer_id, peer_addr, peer_port):
 		peer_addresses[peer_id] = (peer_addr,peer_port)
 
 	# sed message to address
+	@staticmethod
 	def send_msg(peer_id, msg):
 		try:
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			sock.connect(peer_addr[peer_id])
+			sock.connect(peer_addresses[peer_id])
 			sock.send(msg.encode())
 			sock.close()
-			print(f'> {peer_id}@{str(peer_addr[peer_id])}: {msg}')
+			print(f'> {peer_id}@{str(peer_addresses[peer_id])}: {msg}')
 		except:
-			print(f"> ERROR: Couldn't connect to {peer_id}@{str(peer_addr[peer_id])}!")
+			print(f"> ERROR: Couldn't connect to {peer_id}@{str(peer_addresses[peer_id])}!")
 
 # cli for user input
 class Cli:
 	# run the cli
+	@staticmethod
 	def run():
 		while True:
 			cmd = input('Enter command: ')
-			if cmd.startswith(Command.MESSAGE)
-				tokens = cmd.split(' ')[1:]:
-				if len(tokens) < :
+			if cmd.startswith(Commands.MESSAGE):
+				tokens = cmd.split(' ')[1:]
+				if len(tokens) < 3:
 					print(f'> Invalid args! Usage: {Protocol.MESSAGE} <sender:id> <receiver_id> <message>')
 					continue
 				message = Protocol.MESSAGE + ':'.join(tokens[:2]) + ':' + ' '.join(tokens[2:])
 				Sender.send_msg(tokens[0], message)
 				continue
-			if prefix == Command.TOPOLOGY_UPDATE:
+			if cmd.startswith(Commands.TOPOLOGY_UPDATE):
 				if len(tokens) != 2:
 					print(f'> Invalid args! Usage: {Protocol.TOPOLOGY_UPDATE} <config_file>')
 					continue
