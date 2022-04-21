@@ -5,7 +5,7 @@ class Controller:
 	# update the networks topology according to the passed config file
 	def topology_update(config_file):
 		# read config and update peers
-		parser.parse_file(config_file, sender)
+		parser.parse_file(config_file)
 
 # protocol message prefixes
 class Protocol:
@@ -20,7 +20,7 @@ class Commands:
 # parser to parse input files
 class Parser:
 	# parse the config file
-	def parse_file(file, sender):
+	def parse_file(file):
 		# open file
 		config = open(file)
 		# read lines and parse topology info
@@ -46,17 +46,27 @@ class Parser:
 				peer_id = line[0][4:]
 				# get links
 				peer_links = line[1]
-				send_links(peer_id, peer_links, sender)
+				send_topology_update(peer_id, peer_links)
 				continue
 
+
 	# send links and peer addresses to specified peer
-	def send_links(peer_id, peer_links, sender):
-		message = [Protocol.TOPOLOGY_UPDATE]
-		for link in peer_links.split(','):
-			message.append(sender.get_peer(link.split(' ')[1]))
-			message.append(link)
-		message = ' '.join(message)
-		Sender.send_msg(peer_id, message)
+	def send_topology_update(peer_id, peer_links):
+		message = Protocol.TOPOLOGY_UPDATE+':'
+		# send names of nodes
+		for peer_name in peer_addresses.keys():
+			message.append(' ' + peer_name)
+		message.append(':')
+		# send ip addr of links
+		for peer in peer_links.split(',').split(' ')[0]
+			message.append(peer + '_')
+			message.append(sender.get_peer(peer[0]) + '_')
+			message.append(sender.get_peer(peer[1])
+		message.append(':')
+		# send links
+		message.append(peer_links)
+		# send message to peer
+		sender.send_msg(peer_id, message)
 
 # sends messages over tcp
 class Sender:

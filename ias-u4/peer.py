@@ -1,35 +1,45 @@
 # peer node code goes here...
 import socket
-from turtle import forward
-
-from pyparsing import col
 
 # stores the routing table
 class Routing:
+
+	INFINITE = -1
+	NO_HOP = ''
+
+	node_id = ''
+	peer_addr = {}
 	routing_table = {}
 
-	# returns the RTT from source to target node
-	# -1 is returned if infinite
-	def get_rtt(source_id, dest_id):
-		if source_id not in routing_table:
-			return -1
-		if dest_id not in routing_table[source_id]:
-			return -1
-		return routing_table[source_id][dest_id]
+	# add entry to routing table
+	def add_route(dest_id):
+		routing_table[dest_id] = [INFINITE, NO_HOP]
 
-	# sets the specified connections rtt in the routing table
-	def set_rtt(source_id, dest_id, rtt):
-		routing_table[source_id][dest_id] = rtt
+	# returns the RTT to destination
+	# returns Routing.INFINITE  if no route found
+	def get_rtt(dest_id):
+		return routing_table[dest_id][0]
 
-class DistanceVector:
-	forwarding_table = []
+	# set rtt to destination
+	def set_rtt(dest_id, rtt):
+		routing_table[dest_id][0] = rtt
 
-	# update of least cost from x to y
+	# return next hop to destination
+	# return ROUTING.NO_HOP  if no route found
+	def get_next_hop(dest_id):
+		return routing_table[dest_id][1]
+
+	# set next hop to destination
+	def set_next_hop(dest_id, next_hop_id):
+		routing_table[dest_id][1] = next_hop_id
+
+''' 	# update of least cost from x to y
 	def update_dist(rcv_id, rcv_vec):
 		for i in range(1,len(forwarding_table)):
 			if i == rcv_id:
 				continue
 			forwarding_table[0][i] = min(rcv_vec[i]+forwarding_table[0][rcv_id], forwarding_table[0][i])
+'''
 
 '''
 TODO
@@ -41,8 +51,8 @@ TODO
 [] "finale" keyword with the last node being informed
 [x] forwarding table
 [x] routing algorithm -> bellman-fort, distant vector algorithm
-[] Nodes know name of all other nodes
-[] Nodes know only IP of neighbours
-[] Node name given by NTU
+[x] Nodes know name of all other nodes
+[x] Nodes know only IP of neighbours
+[x] Node name given by NTU
 [] Nodes open connection only to transmit message, than close.
 '''
