@@ -53,15 +53,15 @@ class Parser:
 	# send links and peer addresses to specified peer
 	def send_topology_update(peer_id, peer_links):
 		message = Protocol.TOPOLOGY_UPDATE+':'
+		# append node id
+		message.append(peer_id)
 		# send names of nodes
 		for peer_name in peer_addresses.keys():
 			message.append(' ' + peer_name)
 		message.append(':')
 		# send ip addr of links
 		for peer in peer_links.split(',').split(' ')[0]
-			message.append(peer + '_')
-			message.append(sender.get_peer(peer[0]) + '_')
-			message.append(sender.get_peer(peer[1])
+			message.append(' '.join('_'.join([peer, sender.get_peer(peer[0]), sender.get_peer(peer[1])])))
 		message.append(':')
 		# send links
 		message.append(peer_links)
@@ -85,7 +85,7 @@ class Sender:
 		try:
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			sock.connect(peer_addr[peer_id])
-			sock.send(msg)
+			sock.send(msg.encode())
 			sock.close()
 			print(f'> {peer_id}@{str(peer_addr[peer_id])}: {msg}')
 		except:
@@ -97,13 +97,12 @@ class Cli:
 	def run():
 		while True:
 			cmd = input('Enter command: ')
-			prefix = cmd.split(' ')[0]
-			tokens = cmd.split(' ')[1:]
-			if prefix == Command.MESSAGE:
-				if len(tokens) < 4:
+			if cmd.startswith(Command.MESSAGE)
+				tokens = cmd.split(' ')[1:]:
+				if len(tokens) < :
 					print(f'> Invalid args! Usage: {Protocol.MESSAGE} <sender:id> <receiver_id> <message>')
 					continue
-				message = Protocol.MESSAGE + ' ' + ' '.join(tokens[1:])
+				message = Protocol.MESSAGE + ':'.join(tokens[:2]) + ':' + ' '.join(tokens[2:])
 				Sender.send_msg(tokens[0], message)
 				continue
 			if prefix == Command.TOPOLOGY_UPDATE:

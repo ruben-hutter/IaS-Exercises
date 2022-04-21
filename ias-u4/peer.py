@@ -1,6 +1,75 @@
 # peer node code goes here...
 import socket
 
+# launch node
+def launch(ip_addr, port):
+	# create server socket to bind incomin connections
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	sock.bind((ip_addr, port))
+	sock.listen()
+	print(f'Peer listening on {ip_addr}:{port}')
+	# wait for incoming connections
+	while True:
+		# accept connection from othe peer
+		peer_sock, peer_addr = sock.accept()
+		try:
+			# receive message from other peer
+			msg = connection.recv()
+			if msg:
+				parse_input(msg)
+			else:
+				break
+		finally:
+			# close connection when finished
+			peer_sock.close()
+
+# parse messages received from peer
+def parse_input(message):
+	message = message.decode()
+	if message.startswith(Protocol.TOPOLOGY_UPDATE):
+		parse_ntu(message.split(':'))
+		continue
+	if message.startswith(Protocol.MESSAGE):
+		parse_message(message.split(':'))
+		continue
+
+# run ntu
+def parse_ntu(ntu_tokens):
+	# process peer names
+	names = ntu_tokens[0].split()
+	for name in names:
+		# empty string
+		if not name or not name.strip():
+			continue
+		Routing.add_route(name)
+	# process peer addresses
+	addrs = ntu_tokens[1].split()
+	for addr in addrs:
+		# empty string
+		if not addr or not addr.strip():
+			continue
+		addr_tokens = addr.split('_')
+		# add peer addr to peer addersses
+		peer_addr[addr_tokens[0]] = (addr_tokens[1],int(addr_tokens[2]))
+	# process peer links
+	links = ntu_tokens[2]
+	for link in links.split(','):
+		# empty string
+		if not link or not link.strip():
+			continue
+		dest_id  = link.split(',')[0]
+		rtt = link.split(',')[1]
+		Routing.set_rtt(dest_id, rtt)
+
+# process message
+def parse_msg(message_tokens):
+
+
+# protocol message prefixes
+class Protocol:
+	MESSAGE = 'MSG'
+	TOPOLOGY_UPDATE = 'NTU'
+
 # stores the routing table
 class Routing:
 
