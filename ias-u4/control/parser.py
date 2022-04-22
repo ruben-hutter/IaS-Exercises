@@ -1,22 +1,23 @@
-import protocol
+from protocol import Protocol
 import sender
 
 # parser to parse input files
 # send links and peer addresses to specified peer
 def send_topology_update(peer_id, peer_links):
-	message = protocol.TOPOLOGY_UPDATE+':'
+	message = Protocol.TOPOLOGY_UPDATE+':'
 	# append node id
-	message.append(peer_id)
+	message += peer_id
 	# send names of nodes
 	for peer_name in sender.peer_addresses.keys():
-		message.append(' ' + peer_name)
-	message.append(':')
+		message += (' ' + peer_name)
+	message += ':'
 	# send ip addr of links
-	for peer in peer_links.split(',').split(' ')[0]:
-		message.append(' '.join('_'.join([peer, sender.get_peer(peer[0]), sender.get_peer(peer[1])])))
-	message.append(':')
+	for peer_link in peer_links.split(','):
+		peer = peer_link.split(' ')[0]
+		message += (' '.join('_'.join([peer, sender.get_peer(peer)[0], sender.get_peer(peer)[1]])))
+	message += ':'
 	# send links
-	message.append(peer_links)
+	message += peer_links
 	# send message to peer
 	sender.send_msg(peer_id, message)
 
@@ -32,7 +33,7 @@ def parse_file(file):
 		if not line:
 			# send finale to last peer
 			if peer_id:
-				sender.send_msg(peer_id, protocol.FINALE)
+				sender.send_msg(peer_id, Protocol.FINALE)
 			config.close()
 			return
 		line = line.rstrip()

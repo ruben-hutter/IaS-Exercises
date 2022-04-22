@@ -1,6 +1,6 @@
-import protocol
+from protocol import Protocol
 import sender
-import commands
+from commands import Commands
 import control
 
 # cli for user input
@@ -8,16 +8,18 @@ import control
 def run():
 	while True:
 		cmd = input('Enter command: ')
-		if cmd.startswith(commands.MESSAGE):
+		if cmd.startswith(Commands.MESSAGE):
 			tokens = cmd.split(' ')[1:]
 			if len(tokens) < 3:
-				print(f'> Invalid args! Usage: {protocol.MESSAGE} <sender:id> <receiver_id> <message>')
+				print(f'> Invalid args! Usage: {Protocol.MESSAGE} <sender:id> <receiver_id> <message>')
 				continue
-			message = protocol.MESSAGE + ':'.join(tokens[:2]) + ':' + ' '.join(tokens[2:])
+			message = Protocol.MESSAGE + ':'.join(tokens[:2]) + ':' + ' '.join(tokens[2:])
 			sender.send_msg(tokens[0], message)
 			continue
-		if cmd.startswith(commands.TOPOLOGY_UPDATE):
+		if cmd.startswith(Commands.TOPOLOGY_UPDATE):
 			if len(tokens) != 1:
-				print(f'> Invalid args! Usage: {protocol.TOPOLOGY_UPDATE} <config_file>')
+				print(f'> Invalid args! Usage: {Protocol.TOPOLOGY_UPDATE} <config_file>')
 				continue
 			control.topology_update(tokens[0])
+			continue
+		print('> Unknown command!')
