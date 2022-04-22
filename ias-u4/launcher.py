@@ -29,7 +29,6 @@ def main(args):
 				peer_port = line[2]
 				# launch peer
 				subprocess.Popen(['python3', 'peer/peer.py', peer_addr, peer_port])
-				print(f'> Started peer {peer_id}...')
 
 # file run
 if __name__ == "__main__":
