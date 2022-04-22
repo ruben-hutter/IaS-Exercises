@@ -1,7 +1,6 @@
 # peer node code goes here...
-from ipaddress import ip_address
 import socket
-from this import d
+import sys
 
 # protocol message prefixes
 class Protocol:
@@ -47,6 +46,7 @@ class Routing:
 
 	# send nu to peers
 	def send_nu():
+		return
 		#TODO implementation
 
 class Sender:
@@ -180,18 +180,6 @@ def main(args):
 # file run
 if __name__ == "__main__":
 	main(sys.argv)
-
-
-
-
-
-
-
-
-
-
-
-
 
 '''
 TODO

@@ -1,5 +1,6 @@
 # control node code goes here
 import socket
+import sys
 
 class Controller:
 	# update the networks topology according to the passed config file
@@ -56,6 +57,7 @@ class Parser:
 					Sender.send_msg(peer_id, Protocol.FINALE)
 				config.close()
 				return
+			line = line.rstrip()
 			# line is node declaration
 			if line.startswith('addr'):
 				# split line
