@@ -125,3 +125,13 @@ class Cli:
 					print(f'> Invalid args! Usage: {Protocol.TOPOLOGY_UPDATE} <config_file>')
 					continue
 				Controller.topology_update()
+
+# peer launched
+def main(args):
+	config = args[1]
+	Controller.topology_update(config)
+	Cli.run()
+
+# file run
+if __name__ == "__main__":
+        main(sys.argv)

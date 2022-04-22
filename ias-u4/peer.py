@@ -171,6 +171,28 @@ def bellman_ford(origin_id, dest_id, rtt):
 		Routing.routing_table[dest_id][0] = min_rtt
 		Routing.routing_table[dest_id][1] = origin_id
 
+# peer launched
+def main(args):
+	ip_addr = args[1]
+	port = int(args[2])
+	launch(ip_addr, port)
+
+# file run
+if __name__ == "__main__":
+	main(sys.argv)
+
+
+
+
+
+
+
+
+
+
+
+
+
 '''
 TODO
 [x] output message only to target
