@@ -114,6 +114,12 @@ def parse_nu(nu_tokens):
 		dest_id = link_tokens[0]
 		rtt = int(link_tokens[1])
 		bellman_ford(origin_id, dest_id, rtt)
+	send_nu()
+
+# sends a nu to all peers
+def send_nu():
+	#TODO implementation
+	return
 
 # Bellman–Ford algorithm
 def bellman_ford(origin_id, dest_id, rtt):
