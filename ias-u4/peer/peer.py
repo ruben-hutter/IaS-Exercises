@@ -1,6 +1,6 @@
 # peer node code goes here...
-from routing import Routing
-from sender import Sender
+import routing
+import sender
 from protocol import Protocol
 import socket
 import sys
@@ -44,21 +44,21 @@ def parse_input(message):
 		return
 	# received finale command from controller
 	if message.startswith(Protocol.FINALE):
-		Routing.send_nu()
+		routing.send_nu()
 
 # run ntu
 def parse_ntu(ntu_tokens):
 	# clear old routing table
-	Routing.routing_table.clear()
+	routing.routing_table.clear()
 	# process this peer's id
-	Routing.node_id = ntu_tokens[1]
+	routing.node_id = ntu_tokens[1]
 	# process peer names
 	names = ntu_tokens[2].split(' ') # ["name1", ...]
 	for name in names:
 		# empty string
 		if not name.strip():
 			continue
-		Routing.add_route(name.strip())
+		routing.add_route(name.strip())
 
 	# process peer addresses
 	addrs = ntu_tokens[3].split(' ') # ["id1_ip1_port1", ...]
@@ -70,7 +70,7 @@ def parse_ntu(ntu_tokens):
 		# add peer addr to peer addresses
 		ip_address = addr_tokens[1]
 		port = int(addr_tokens[2])
-		Routing.peer_addr[addr_tokens[0]] = (ip_address, port)
+		routing.peer_addr[addr_tokens[0]] = (ip_address, port)
 
 	# process peer links
 	links = ntu_tokens[4].split(',') # ["name1 ttr1", ...]
@@ -81,23 +81,23 @@ def parse_ntu(ntu_tokens):
 		link_tokens = link.split(' ')
 		dest_id = link_tokens[0]
 		rtt = int(link_tokens[1])
-		Routing.set_rtt(dest_id, rtt)
+		routing.set_rtt(dest_id, rtt)
 
 # process message
 def parse_msg(message_tokens):
-	if message_tokens[2] == Routing.node_id:
+	if message_tokens[2] == routing.node_id:
 		msg = ' '.join(message_tokens[3:])
 		print(f'Message received from node {message_tokens[1]}:')
 		print(msg)
 		return
-	message_tokens[1] = Routing.node_id
+	message_tokens[1] = routing.node_id
 	receiver_id = message_tokens[2]
 	forward_msg(':'.join(message_tokens), receiver_id)
 
 # forward message to specified receiver
 def forward_msg(dest_id, msg):
-	receiver_id = Routing.get_next_hop(dest_id)
-	Sender.send_msg(receiver_id, msg)
+	receiver_id = routing.get_next_hop(dest_id)
+	sender.send_msg(receiver_id, msg)
 	print(f'> forwarded message to {receiver_id}')
 
 # process nu
@@ -113,11 +113,11 @@ def parse_nu(nu_tokens):
 
 # Bellman–Ford algorithm
 def bellman_ford(origin_id, dest_id, rtt):
-	actual_rtt = Routing.routing_table[dest_id][0]
-	min_rtt = min(actual_rtt, Routing.routing_table[origin_id] + int(rtt))
+	actual_rtt = routing.routing_table[dest_id][0]
+	min_rtt = min(actual_rtt, routing.routing_table[origin_id] + int(rtt))
 	if min_rtt < actual_rtt:
-		Routing.routing_table[dest_id][0] = min_rtt
-		Routing.routing_table[dest_id][1] = origin_id
+		routing.routing_table[dest_id][0] = min_rtt
+		routing.routing_table[dest_id][1] = origin_id
 
 # peer launched
 def main(args):
