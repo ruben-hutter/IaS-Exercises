@@ -125,14 +125,13 @@ def parse_nu(nu_tokens):
 			continue
 		link_tokens = link.split(' ')
 		dest_id = link_tokens[0]
-		rtt = int(link_tokens[1])
+		rtt = link_tokens[1]
 		modified |= routing.bellman_ford(origin_id, dest_id, rtt)
 	# only send nu if routing table has changed
 	global sent_once
 	if modified or not sent_once:
 		sent_once = True
 		routing.send_nu()
-	print(routing.routing_table)
 
 # peer launched
 def main(args):

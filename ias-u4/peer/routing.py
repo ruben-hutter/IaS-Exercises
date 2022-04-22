@@ -42,10 +42,10 @@ def send_nu(): # NU:origin_id:name1 rtt, ...
 # Bellman–Ford algorithm
 def bellman_ford(origin_id, dest_id, rtt):
 	modified = False
-	actual_rtt = routing.routing_table[dest_id][0]
-	min_rtt = min(actual_rtt, routing.routing_table[origin_id][0] + int(rtt))
+	actual_rtt = get_rtt(dest_id)
+	min_rtt = min(actual_rtt, get_rtt(origin_id) + int(rtt))
 	if min_rtt < actual_rtt:
 		modified = True
-		routing.routing_table[dest_id][0] = min_rtt
-		routing.routing_table[dest_id][1] = origin_id
+		set_rtt(dest_id, min_rtt)
+		set_next_hop(dest_id, origin_id)
 	return modified

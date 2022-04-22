@@ -1,6 +1,6 @@
 from protocol import Protocol
-import sender
 from commands import Commands
+import sender
 import control
 
 CONTROLLER_ID = 'controller'

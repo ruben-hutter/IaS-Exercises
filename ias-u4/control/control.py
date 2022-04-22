@@ -9,7 +9,6 @@ def topology_update(config_file):
 	# read config and update peers
 	parser.parse_file(config_file)
 
-
 # peer launched
 def main(args):
 	config = args[1]
