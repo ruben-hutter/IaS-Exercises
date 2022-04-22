@@ -36,4 +36,3 @@ class Routing:
 	# send nu to peers
 	def send_nu():
 		return
-		# TODO implementation
