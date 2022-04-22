@@ -3,42 +3,31 @@ import sys
 import subprocess
 
 def main(args):
-	# launch controller
-	if len(args) == 2:
-		config = args[1]
-		subprocess.run(['python', 'control.py', config])
+	if len(args) != 3:
+		print('> Invalid args! Usage: python launcher.py <controller/peers> <config>')
 		return
 
-	# launch peers
-	if len(args) == 4:
-		# open file
-		config = open(args[3])
+	modus = args[1]
+	config = open(args[2])
+
+	# launch controller: "python launcher.py controller config"
+	if modus == "controller":
+		subprocess.run(['python', 'control/control.py', config])
+	
+	# launch peers: "python launcher.py peers config"
+	elif modus == "peers":
 		# read config and launch peers
-		skip = True
 		for line in config:
 			# line is node declaration
 			if line.startswith('addr'):
 				# split line
-				line = line.split(':')
-				# get id
+				line = line.split(':') # ["addr", "ip_addr", "port"]
 				peer_id = line[0][4:]
-				#if peer_id == args[1]:
-				#	skip == False
-				#if peer_id == args[2]:
-				#	skip == True
-				#if skip:
-				#	continue
-				# get addr
 				peer_addr = line[1]
-				# get port
-				peer_port = line[2].rstrip()
+				peer_port = line[2]
 				# launch peer
-				subprocess.run(['python', 'peer.py', peer_addr, peer_port])
-		return
-	print('> Invalid args:')
-	print('> Usage: python launcher.py <first_node> <last_node> <config_file>')
-	print('> or')
-	print('> Usage: python launcher.py <config_file>')
+				subprocess.run(['python', 'peer/peer.py', peer_addr, peer_port, '&'])
+				print(f'> Started peer {peer_id}...')
 
 # file run
 if __name__ == "__main__":
