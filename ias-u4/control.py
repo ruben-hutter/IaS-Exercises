@@ -49,7 +49,7 @@ class Parser:
 		# read lines and parse topology info
 		peer_id = ''
 		while True:
-			line = file.readline()
+			line = config.readline()
 			# reached eof
 			if not line:
 				# send finale to last peer
