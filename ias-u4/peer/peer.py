@@ -1,6 +1,7 @@
 # peer node code goes here...
-from protocol import Protocol
 from routing import Routing
+from sender import Sender
+from protocol import Protocol
 import socket
 import sys
 
