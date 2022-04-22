@@ -1,7 +1,7 @@
 from commands import Commands
 from protocol import Protocol
 from sender import Sender
-from controller import Controller
+import control
 
 # cli for user input
 class Cli:
@@ -22,4 +22,4 @@ class Cli:
 				if len(tokens) != 2:
 					print(f'> Invalid args! Usage: {Protocol.TOPOLOGY_UPDATE} <config_file>')
 					continue
-				Controller.topology_update()
+				control.topology_update()

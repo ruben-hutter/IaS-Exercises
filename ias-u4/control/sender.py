@@ -12,6 +12,7 @@ class Sender:
 	# adds a peer to the peer list
 	@staticmethod
 	def add_peer(peer_id, peer_addr, peer_port):
+		peer_addresses = {}
 		peer_addresses[peer_id] = (peer_addr,peer_port)
 
 	# sed message to address
