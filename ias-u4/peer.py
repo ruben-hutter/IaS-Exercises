@@ -7,6 +7,7 @@ from this import d
 class Protocol:
 	MESSAGE = 'MSG'
 	TOPOLOGY_UPDATE = 'NTU'
+	FINALE = 'FIN'
 	NETWORK_UPDATE = 'NU'
 
 # stores the routing table

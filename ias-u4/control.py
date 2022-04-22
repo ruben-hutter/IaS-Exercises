@@ -12,6 +12,7 @@ class Controller:
 class Protocol:
 	MESSAGE = 'MSG'
 	TOPOLOGY_UPDATE = 'NTU'
+	FINALE = 'FIN'
 
 # cli command prefixes
 class Commands:
@@ -45,7 +46,16 @@ class Parser:
 		# open file
 		config = open(file)
 		# read lines and parse topology info
-		for line in config:
+		peer_id = ''
+		while True:
+			line = file.readline()
+			# reached eof
+			if not line:
+				# send finale to last peer
+				if peer_id:
+					Sender.send_msg(peer_id, Protocol.FINALE)
+				config.close()
+				return
 			# line is node declaration
 			if line.startswith('addr'):
 				# split line
