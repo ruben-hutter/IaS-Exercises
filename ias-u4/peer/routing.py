@@ -1,4 +1,5 @@
 import sender
+import routing
 
 INFINITE = -1
 NO_HOP = ''
@@ -36,3 +37,11 @@ def send_nu(): # NU:origin_id:name1 rtt, ...
 			continue
 		nu_msg += dest_id + ' ' + link_info[0] + ','
 	sender.broadcast_msg(nu_msg)
+
+# Bellman–Ford algorithm
+def bellman_ford(origin_id, dest_id, rtt):
+	actual_rtt = routing.routing_table[dest_id][0]
+	min_rtt = min(actual_rtt, routing.routing_table[origin_id] + int(rtt))
+	if min_rtt < actual_rtt:
+		routing.routing_table[dest_id][0] = min_rtt
+		routing.routing_table[dest_id][1] = origin_id
