@@ -7,14 +7,16 @@ def send_topology_update(peer_id, peer_links):
 	message = Protocol.TOPOLOGY_UPDATE+':'
 	# append node id
 	message += peer_id
+	message += ':'
 	# send names of nodes
-	for peer_name in sender.peer_addresses.keys():
-		message += (' ' + peer_name)
+	message += ' '.join(sender.peer_addresses.keys())
 	message += ':'
 	# send ip addr of links
+	link_block = []
 	for peer_link in peer_links.split(','):
 		peer = peer_link.split(' ')[0]
-		message += (' '.join('_'.join([peer, sender.get_peer(peer)[0], sender.get_peer(peer)[1]])))
+		link_block.append('_'.join([peer, sender.get_peer(peer)[0], str(sender.get_peer(peer)[1])]))
+	message += ' '.join(link_block)
 	message += ':'
 	# send links
 	message += peer_links

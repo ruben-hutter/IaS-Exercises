@@ -9,7 +9,7 @@ def get_peer(peer_id):
 
 # adds a peer to the peer list
 def add_peer(peer_id, peer_addr, peer_port):
-	peer_addresses[peer_id] = (peer_addr,peer_port)
+	peer_addresses[peer_id] = (peer_addr,int(peer_port))
 
 # sed message to address
 def send_msg(peer_id, msg):

@@ -18,7 +18,7 @@ def launch(ip_addr, port):
 		peer_sock, _ = sock.accept()
 		try:
 			# receive message from other peer
-			msg = peer_sock.recv()
+			msg = peer_sock.recv(1024)
 			if msg:
 				parse_input(msg)
 			else:
@@ -32,6 +32,7 @@ def parse_input(message):
 	message = message.decode()
 	# received topology update
 	if message.startswith(Protocol.TOPOLOGY_UPDATE):
+		print('> Received topology update from controller')
 		parse_ntu(message.split(':'))
 		return
 	# received normal message to either print or forward
@@ -92,11 +93,14 @@ def parse_msg(message_tokens):
 		return
 	message_tokens[1] = routing.node_id
 	receiver_id = message_tokens[2]
-	forward_msg(':'.join(message_tokens), receiver_id)
+	forward_msg(receiver_id, ':'.join(message_tokens))
 
 # forward message to specified receiver
 def forward_msg(dest_id, msg):
 	receiver_id = routing.get_next_hop(dest_id)
+	if receiver_id == routing.NO_HOP:
+		print(f'> ERROR: No route to node {dest_id} found!')
+		return
 	sender.send_msg(receiver_id, msg)
 	print(f'> forwarded message to {receiver_id}')
 
