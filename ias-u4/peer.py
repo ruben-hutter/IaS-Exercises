@@ -138,6 +138,7 @@ def parse_msg(message_tokens):
 def forward_msg(dest_id, msg):
 	receiver_id = Routing.get_next_hop(dest_id)
 	Sender.send_msg(receiver_id, msg)
+	print(f'> forwarded message to {receiver_id}')
 
 # process nu
 def parse_nu(nu_tokens):
@@ -160,8 +161,8 @@ def bellman_ford(origin_id, dest_id, rtt):
 
 '''
 TODO
-[] output message only to target
-[] print "forward" transit nodes
+[x] output message only to target
+[x] print "forward" transit nodes
 [] NU forwarded to all connections
 	- except if forwarding table already up-to-date
 [] Handle multiple optimal paths
@@ -171,5 +172,5 @@ TODO
 [x] Nodes know name of all other nodes
 [x] Nodes know only IP of neighbours
 [x] Node name given by NTU
-[] Nodes open connection only to transmit message, than close.
+[x] Nodes open connection only to transmit message, than close.
 '''
