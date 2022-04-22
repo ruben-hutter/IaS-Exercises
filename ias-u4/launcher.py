@@ -12,7 +12,7 @@ def main(args):
 
 	# launch controller: "python launcher.py controller config"
 	if modus == "controller":
-		subprocess.run(['python3', 'control/control.py', config])
+		subprocess.Popen(['python3', 'control/control.py', config])
 	
 	# launch peers: "python launcher.py peers config"
 	elif modus == "peers":
@@ -28,7 +28,7 @@ def main(args):
 				peer_addr = line[1]
 				peer_port = line[2]
 				# launch peer
-				subprocess.run(['python3', 'peer/peer.py', peer_addr, peer_port, '&'])
+				subprocess.Popen(['python3', 'peer/peer.py', peer_addr, peer_port])
 				print(f'> Started peer {peer_id}...')
 
 # file run
