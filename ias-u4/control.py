@@ -125,4 +125,3 @@ class Cli:
 					print(f'> Invalid args! Usage: {Protocol.TOPOLOGY_UPDATE} <config_file>')
 					continue
 				Controller.topology_update()
-				return
