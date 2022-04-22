@@ -12,7 +12,7 @@ def main(args):
 
 	# launch controller: "python launcher.py controller config"
 	if modus == "controller":
-		subprocess.Popen(['python3', 'control/control.py', config])
+		subprocess.run(['python3', 'control/control.py', config])
 	
 	# launch peers: "python launcher.py peers config"
 	elif modus == "peers":
