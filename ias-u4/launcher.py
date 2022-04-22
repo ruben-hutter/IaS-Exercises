@@ -8,7 +8,7 @@ def main(args):
 		return
 
 	modus = args[1]
-	config = open(args[2])
+	config = args[2]
 
 	# launch controller: "python launcher.py controller config"
 	if modus == "controller":
@@ -16,6 +16,8 @@ def main(args):
 	
 	# launch peers: "python launcher.py peers config"
 	elif modus == "peers":
+		# open config file
+		config = open(config)
 		# read config and launch peers
 		for line in config:
 			# line is node declaration
