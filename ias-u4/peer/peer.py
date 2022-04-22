@@ -5,6 +5,9 @@ from protocol import Protocol
 import socket
 import sys
 
+# sent nu at least once
+sent_once = False
+
 # launch node
 def launch(ip_addr, port):
 	# create server socket to bind incomin connections
@@ -73,6 +76,10 @@ def parse_ntu(ntu_tokens):
 		port = int(addr_tokens[2])
 		routing.peer_addr[addr_tokens[0]] = (ip_address, port)
 
+	# set own link
+	routing.set_rtt(routing.node_id, 0)
+	routing.set_next_hop(routing.node_id, routing.node_id)
+
 	# process peer links
 	links = ntu_tokens[4].split(',') # ["name1 ttr1", ...]
 	for link in links:
@@ -83,6 +90,8 @@ def parse_ntu(ntu_tokens):
 		dest_id = link_tokens[0]
 		rtt = int(link_tokens[1])
 		routing.set_rtt(dest_id, rtt)
+		routing.set_next_hop(dest_id, dest_id)
+	print(routing.routing_table)
 
 # process message
 def parse_msg(message_tokens):
@@ -111,13 +120,19 @@ def parse_nu(nu_tokens):
 	origin_id = nu_tokens[1]
 	links = nu_tokens[2].split(',') # ["name1 rtt1", ...]
 	for link in links:
+		# empty string
+		if not link.strip():
+			continue
 		link_tokens = link.split(' ')
 		dest_id = link_tokens[0]
 		rtt = int(link_tokens[1])
 		modified |= routing.bellman_ford(origin_id, dest_id, rtt)
 	# only send nu if routing table has changed
-	if modified:
+	global sent_once
+	if modified or not sent_once:
+		sent_once = True
 		routing.send_nu()
+	print(routing.routing_table)
 
 # peer launched
 def main(args):

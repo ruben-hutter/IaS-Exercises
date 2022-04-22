@@ -1,7 +1,8 @@
 import sender
 import routing
+import sys
 
-INFINITE = -1
+INFINITE = sys.maxsize
 NO_HOP = ''
 
 node_id = '' # id of this node
@@ -35,13 +36,16 @@ def send_nu(): # NU:origin_id:name1 rtt, ...
 		# skip unreachable
 		if link_info[1] == NO_HOP:
 			continue
-		nu_msg += dest_id + ' ' + link_info[0] + ','
+		nu_msg += dest_id + ' ' + str(link_info[0]) + ','
 	sender.broadcast_msg(nu_msg)
 
 # Bellman–Ford algorithm
 def bellman_ford(origin_id, dest_id, rtt):
+	modified = False
 	actual_rtt = routing.routing_table[dest_id][0]
-	min_rtt = min(actual_rtt, routing.routing_table[origin_id] + int(rtt))
+	min_rtt = min(actual_rtt, routing.routing_table[origin_id][0] + int(rtt))
 	if min_rtt < actual_rtt:
+		modified = True
 		routing.routing_table[dest_id][0] = min_rtt
 		routing.routing_table[dest_id][1] = origin_id
+	return modified

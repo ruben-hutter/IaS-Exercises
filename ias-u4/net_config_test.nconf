@@ -1,0 +1,9 @@
+addra:127.0.0.1:5001
+addrb:127.0.0.1:5002
+addrc:127.0.0.1:5003
+addrd:127.0.0.1:5004
+
+linka:b 3,c 2
+linkb:a 3,c 8,d 3
+linkc:a 2,b 8
+linkd:b 3
