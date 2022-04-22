@@ -30,8 +30,11 @@ def set_next_hop(dest_id, next_hop_id):
 	routing_table[dest_id][1] = next_hop_id
 
 # send nu to peers
-def send_nu(dest_id): # NU:origin_id:name1 rtt, ...
-	nu_msg = "NU:".join(dest_id) + ':'
+def send_nu(): # NU:origin_id:name1 rtt, ...
+	nu_msg = "NU:" + node_id + ':'
 	for dest_id, rtt in routing_table:
+		# skip unreachable
+		if rtt == NO_HOP:
+			continue
 		nu_msg += dest_id + ' ' + rtt + ','
-	sender.send_msg(dest_id, nu_msg)
+	sender.broadcast_msg(nu_msg)
