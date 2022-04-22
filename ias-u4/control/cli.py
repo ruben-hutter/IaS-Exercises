@@ -1,7 +1,7 @@
 import protocol
 import sender
-import controller
 import commands
+import control
 
 # cli for user input
 # run the cli
@@ -20,4 +20,4 @@ def run():
 			if len(tokens) != 1:
 				print(f'> Invalid args! Usage: {protocol.TOPOLOGY_UPDATE} <config_file>')
 				continue
-			controller.topology_update(tokens[0])
+			control.topology_update(tokens[0])

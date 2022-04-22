@@ -1,12 +1,19 @@
 # control node code goes here
-import controller
+import control
 import cli
+import parser
 import sys
+
+# update the networks topology according to the passed config file
+def topology_update(config_file):
+	# read config and update peers
+	parser.parse_file(config_file)
+
 
 # peer launched
 def main(args):
 	config = args[1]
-	controller.topology_update(config)
+	control.topology_update(config)
 	cli.run()
 
 # file run
