@@ -44,6 +44,14 @@ class Routing:
 	def set_next_hop(dest_id, next_hop_id):
 		routing_table[dest_id][1] = next_hop_id
 
+class Sender:
+	# send message to receiver with specified id
+	def send_msg(receiver_id, msg):
+		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		sock.connect(Routing.peer_addr[receiver_id])
+		sock.send(msg.encode())
+		sock.close()
+
 # launch node
 def launch(ip_addr, port):
 	# create server socket to bind incomin connections
@@ -123,7 +131,13 @@ def parse_msg(message_tokens):
 		print(msg)
 		return
 	message_tokens[1] = Routing.node_id
-	#forward_msg(':'.join(message_tokens))
+	dest_id = message_tokens[2]
+	forward_msg(':'.join(message_tokens), receiver_id)
+
+# forward message to specified receiver
+def forward_msg(dest_id, msg):
+	receiver_id = Routing.get_next_hop(dest_id)
+	Sender.send_msg(receiver_id, msg)
 
 # process nu
 def parse_nu(nu_tokens):
