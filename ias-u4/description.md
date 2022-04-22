@@ -7,3 +7,9 @@ The *peer* implementation is divided in multiple files, located in the *peer* fo
 
 **Control**:
 The *control* is similarly implemented, also in his folder. There is again a *protocol* for the possible messages that are managed, *commands* defines the possible commands to enter in the *cli*, that is the "main programm", were you can enter the different commands, started by *control*.
+
+TODO
+[] description
+[x] config 2 correct
+[] script to start nodes
+[] wireshark
