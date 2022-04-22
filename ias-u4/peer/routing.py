@@ -1,7 +1,5 @@
 import sender
 
-# stores the routing table
-
 INFINITE = -1
 NO_HOP = ''
 
@@ -32,9 +30,9 @@ def set_next_hop(dest_id, next_hop_id):
 # send nu to peers
 def send_nu(): # NU:origin_id:name1 rtt, ...
 	nu_msg = "NU:" + node_id + ':'
-	for dest_id, rtt in routing_table:
+	for dest_id, link_info in routing_table.items():
 		# skip unreachable
-		if rtt == NO_HOP:
+		if link_info[1] == NO_HOP:
 			continue
-		nu_msg += dest_id + ' ' + rtt + ','
+		nu_msg += dest_id + ' ' + link_info[0] + ','
 	sender.broadcast_msg(nu_msg)
