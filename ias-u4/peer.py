@@ -45,6 +45,10 @@ class Routing:
 	def set_next_hop(dest_id, next_hop_id):
 		routing_table[dest_id][1] = next_hop_id
 
+	# send nu to peers
+	def send_nu():
+		#TODO implementation
+
 class Sender:
 	# send message to receiver with specified id
 	def send_msg(receiver_id, msg):
@@ -78,14 +82,21 @@ def launch(ip_addr, port):
 # parse messages received from peer
 def parse_input(message):
 	message = message.decode()
+	# received topology update
 	if message.startswith(Protocol.TOPOLOGY_UPDATE):
 		parse_ntu(message.split(':'))
 		return
+	# received normal message to either print or forward
 	if message.startswith(Protocol.MESSAGE):
 		parse_msg(message.split(':'))
 		return
+	# received network update from peer
 	if message.startswith(Protocol.NETWORK_UPDATE):
 		parse_nu(message.split(':'))
+		return
+	# received finale command from controller
+	if message.startswith(Protocol.FINALE):
+		Routing.send_nu()
 
 # run ntu
 def parse_ntu(ntu_tokens):
