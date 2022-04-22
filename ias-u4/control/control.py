@@ -1,13 +1,13 @@
 # control node code goes here
-from controller import Controller
-from cli import Cli
+import controller
+import cli
 import sys
 
 # peer launched
 def main(args):
 	config = args[1]
-	Controller.topology_update(config)
-	Cli.run()
+	controller.topology_update(config)
+	cli.run()
 
 # file run
 if __name__ == "__main__":
