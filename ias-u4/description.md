@@ -5,6 +5,7 @@
 ### Basic Setup
 
 We implemented for the basic setup a *peer* and a *control* node.
+
 **Peer**:
 The *peer* implementation is divided in multiple files, located in the *peer* folder. There is a *protocol* that defines different message types that are correctly managed by the peer, *routing* is responsible to manage the routing table and to save the ip addresses of the neighbour nodes, *sender* establishes a new connection with the correct receiver node and sends the desired message to it, and *peer* is the "main programm" that listens to messages and parse them correctly.
 
@@ -22,15 +23,15 @@ As you can see in the picture below, the ACK are market by Wireshark itself.
 
 ### "I Spy with My Little Eye..."
 
-**TCP connection initialisation steps:**
+#### TCP connection initialisation steps:
 
 - first
 - second
 - third
 
-**Transmit more than packet limit:**
+#### Transmit more than packet limit:
 
-**Launch 2 messages with crossing paths:**
+#### Launch 2 messages with crossing paths:
 
 - intersection of connections
 - repeated hand-shake trials?
@@ -40,5 +41,5 @@ As you can see in the picture below, the ACK are market by Wireshark itself.
 TODO
 [] description
 [x] config 2 correct
-[] script to start nodes
+[x] script to start nodes
 [] wireshark

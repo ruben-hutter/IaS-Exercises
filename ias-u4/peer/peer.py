@@ -91,7 +91,6 @@ def parse_ntu(ntu_tokens):
 		rtt = int(link_tokens[1])
 		routing.set_rtt(dest_id, rtt)
 		routing.set_next_hop(dest_id, dest_id)
-	print(routing.routing_table)
 
 # process message
 def parse_msg(message_tokens):
@@ -111,7 +110,7 @@ def forward_msg(dest_id, msg):
 		print(f'> ERROR: No route to node {dest_id} found!')
 		return
 	sender.send_msg(receiver_id, msg)
-	print(f'> forwarded message to {receiver_id}')
+	print(f'> {routing.node_id} forwarded message to {receiver_id}')
 
 # process nu
 def parse_nu(nu_tokens):

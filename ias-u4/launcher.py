@@ -24,7 +24,6 @@ def main(args):
 			if line.startswith('addr'):
 				# split line
 				line = line.split(':') # ["addr", "ip_addr", "port"]
-				peer_id = line[0][4:]
 				peer_addr = line[1]
 				peer_port = line[2]
 				# launch peer
