@@ -36,8 +36,12 @@ def parse_input(message):
 	# received topology update
 	if message.startswith(Protocol.TOPOLOGY_UPDATE):
 		print('> Received topology update from controller')
+		# remove al old NTU states
 		global sent_once
 		sent_once = False
+		routing.routing_table.clear()
+		routing.peer_addr.clear()
+		# parse new NTU
 		parse_ntu(message.split(':'))
 		return
 	# received normal message to either print or forward
@@ -54,8 +58,6 @@ def parse_input(message):
 
 # run ntu
 def parse_ntu(ntu_tokens):
-	# clear old routing table
-	routing.routing_table.clear()
 	# process this peer's id
 	routing.node_id = ntu_tokens[1]
 	# process peer names
@@ -93,11 +95,6 @@ def parse_ntu(ntu_tokens):
 		rtt = int(link_tokens[1])
 		routing.set_rtt(dest_id, rtt)
 		routing.set_next_hop(dest_id, dest_id)
-
-	#DEBUGING
-	print(f'node: {routing.node_id}')
-	print(f'peer_addr: {routing.peer_addr}')
-	print(f'routing_table: {routing.routing_table}')
 
 # process message
 def parse_msg(message_tokens):
