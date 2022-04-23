@@ -1,5 +1,4 @@
 # control node code goes here
-import control
 import cli
 import parser
 import sys
@@ -12,7 +11,7 @@ def topology_update(config_file):
 # peer launched
 def main(args):
 	config = args[1]
-	control.topology_update(config)
+	topology_update(config)
 	cli.run()
 
 # file run
