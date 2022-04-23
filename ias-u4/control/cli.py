@@ -24,7 +24,5 @@ def run():
 				print(f'> Invalid args! Usage: {Protocol.TOPOLOGY_UPDATE} <config_file>')
 				continue
 			control.topology_update(tokens[0])
-			#DEBUG
-			print(tokens[0])
 			continue
 		print('> Unknown command!')

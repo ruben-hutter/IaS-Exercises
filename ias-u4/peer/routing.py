@@ -1,5 +1,4 @@
 import sender
-import routing
 import sys
 
 INFINITE = sys.maxsize
