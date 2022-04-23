@@ -36,6 +36,8 @@ def parse_input(message):
 	# received topology update
 	if message.startswith(Protocol.TOPOLOGY_UPDATE):
 		print('> Received topology update from controller')
+		global sent_once
+		sent_once = False
 		parse_ntu(message.split(':'))
 		return
 	# received normal message to either print or forward
@@ -91,8 +93,11 @@ def parse_ntu(ntu_tokens):
 		rtt = int(link_tokens[1])
 		routing.set_rtt(dest_id, rtt)
 		routing.set_next_hop(dest_id, dest_id)
+
 	#DEBUGING
-	print(f'node: {routing.node_id} | peer_addr: {routing.peer_addr} | routing_table: {routing.routing_table}')
+	print(f'node: {routing.node_id}')
+	print(f'peer_addr: {routing.peer_addr}')
+	print(f'routing_table: {routing.routing_table}')
 
 # process message
 def parse_msg(message_tokens):
