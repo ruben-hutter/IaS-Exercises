@@ -19,6 +19,7 @@ def run():
 			sender.send_msg(tokens[0], message)
 			continue
 		if cmd.startswith(Commands.TOPOLOGY_UPDATE):
+			tokens = cmd.split(' ')[1:]
 			if len(tokens) != 1:
 				print(f'> Invalid args! Usage: {Protocol.TOPOLOGY_UPDATE} <config_file>')
 				continue
