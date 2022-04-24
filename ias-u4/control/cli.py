@@ -25,4 +25,7 @@ def run():
 				continue
 			control.topology_update(tokens[0])
 			continue
+		if cmd.startswith(Commands.END):
+			print('> Session terminated...')
+			break
 		print('> Unknown command!')

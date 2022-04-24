@@ -2,3 +2,4 @@
 class Commands:
 	MESSAGE = 'MSG'
 	TOPOLOGY_UPDATE = 'NTU'
+	END = 'END'
