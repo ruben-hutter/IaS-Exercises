@@ -31,6 +31,7 @@ def main(args):
 				peer_port = line[2]
 				# launch peer
 				proc_table[peer_id] = subprocess.Popen([sys.executable, 'peer/peer.py', peer_addr, peer_port])
+	print(proc_table)
 	# terminate all subprocesses
 	for proc in proc_table:
 		outs, errs = proc.communicate()
