@@ -7,3 +7,7 @@
 ## Run the peers
 
 `python3 launcher.py peers <config_file>`
+
+## Terminate peers
+
+`python3 terminator.py`
