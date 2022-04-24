@@ -33,7 +33,8 @@ def main(args):
 				# launch peer
 				p = subprocess.Popen([sys.executable, 'peer/peer.py', peer_addr, peer_port])
 				sub_procs[peer_id] = p
-	print(sub_procs)
+	for proc in sub_procs:
+		proc.terminate()
 
 # file run
 if __name__ == "__main__":
