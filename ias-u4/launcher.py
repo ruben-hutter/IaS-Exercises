@@ -29,6 +29,8 @@ def main(args):
 				peer_port = line[2]
 				# launch peer
 				subprocess.Popen([sys.executable, 'peer/peer.py', peer_addr, peer_port])
+	# terminate subprocesses
+	subprocess.Popen.terminate()
 
 # file run
 if __name__ == "__main__":
