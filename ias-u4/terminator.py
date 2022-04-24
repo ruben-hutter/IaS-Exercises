@@ -4,7 +4,8 @@ import json
 def main():
     with open('sub_procs.json', 'r') as f:
         sub_procs = json.load(f)
-    print(sub_procs, type(sub_procs))
+    for k, v in sub_procs:
+        print(f'k: {k} -> {v}')
 
 # file run
 if __name__ == "__main__":
