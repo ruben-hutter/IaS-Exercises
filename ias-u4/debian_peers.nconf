@@ -1,0 +1,10 @@
+# test network configuration
+# always declare all peers first using "addr" and then declare the links using "links"
+
+# peer addresses. format: addr<peer_id>:<ip_addr>:<port>
+addrc:192.168.122.9:5003
+addrd:192.168.122.9:5004
+
+# peer links. format: link<peer_id>:<peer_id rtt,...>
+linkc:a 2,b 8
+linkd:b 3
