@@ -2,9 +2,9 @@
 # always declare all peers first using "addr" and then declare the links using "links"
 
 # peer addresses. format: addr<peer_id>:<ip_addr>:<port>
-addra:192.168.122.25:5001
-addrb:192.168.122.25:5002
+addr1:192.168.122.25:5001
+addr2:192.168.122.25:5002
 
 # peer links. format: link<peer_id>:<peer_id rtt,...>
-linka:b 3,c 2
-linkb:a 3,c 8,d 3
+link1:2 3,3 2
+link2:1 3,3 8,4 3

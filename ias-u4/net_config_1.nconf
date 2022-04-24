@@ -1,16 +1,16 @@
-# example network configuration as Task1 b
+# example network configuration as Task2 b
 # always declare all peers first using "addr" and then declare the links using "links"
 
 # peer addresses. format: addr<peer_id>:<ip_addr>:<port>
-addr1:127.0.0.1:5001
-addr2:127.0.0.1:5002
-addr3:127.0.0.1:5003
-addr4:127.0.0.1:5004
-addr5:127.0.0.1:5005
-addr6:127.0.0.1:5006
-addr7:127.0.0.1:5007
-addr8:127.0.0.1:5008
-addr9:127.0.0.1:5009
+addr1:192.168.122.9:5001
+addr2:192.168.122.9:5002
+addr3:192.168.122.9:5003
+addr4:192.168.122.9:5004
+addr5:192.168.122.9:5005
+addr6:192.168.122.25:5006
+addr7:192.168.122.25:5007
+addr8:192.168.122.25:5008
+addr9:192.168.122.25:5009
 
 # peer links. format: link<peer_id>:<peer_id rtt,...>
 link1:2 5,3 2
