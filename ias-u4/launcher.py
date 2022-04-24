@@ -19,25 +19,16 @@ def main(args):
 	elif modus == "peers":
 		# open config file
 		config = open(config)
-		# save all subprocesses
-		proc_table = {}
 		# read config and launch peers
 		for line in config:
 			# line is node declaration
 			if line.startswith('addr'):
 				# split line
 				line = line.split(':') # ["addr", "ip_addr", "port"]
-				peer_id = line[0][4:]
 				peer_addr = line[1]
 				peer_port = line[2]
 				# launch peer
-				proc_table[peer_id] = subprocess.Popen([sys.executable, 'peer/peer.py', peer_addr, peer_port], stdout=PIPE, stderr=PIPE)
-	print(proc_table)
-	# terminate all subprocesses
-	for proc in proc_table:
-		outs, errs = proc.communicate()
-		print(f'outs: {outs} | errs: {errs}')
-		proc.terminate()
+				subprocess.Popen([sys.executable, 'peer/peer.py', peer_addr, peer_port], stdout=PIPE, stderr=PIPE)
 
 # file run
 if __name__ == "__main__":
