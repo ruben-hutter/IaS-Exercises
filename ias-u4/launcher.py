@@ -1,5 +1,5 @@
 # launcher code for automatically launching nodes from a config
-from asyncio.subprocess import PIPE
+import json
 import sys
 import subprocess
 
@@ -33,7 +33,9 @@ def main(args):
 				# launch peer
 				p = subprocess.Popen([sys.executable, 'peer/peer.py', peer_addr, peer_port])
 				sub_procs[peer_id] = p.pid
-	print(sub_procs)
+	# save subprocesses to a file
+	with open('sub_procs.json', 'w') as fp:
+		json.dump(sub_procs, fp,  indent=4)
 
 # file run
 if __name__ == "__main__":
