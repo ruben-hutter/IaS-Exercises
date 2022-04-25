@@ -8,7 +8,8 @@ CONTROLLER_ID = 'controller'
 # cli for user input
 # run the cli
 def run():
-	while True:
+	running = True
+	while running:
 		cmd = input('Enter command: ')
 		if cmd.startswith(Commands.MESSAGE):
 			tokens = cmd.split(' ')[1:]
@@ -27,5 +28,5 @@ def run():
 			continue
 		if cmd.startswith(Commands.END):
 			print('> Session terminated...')
-			break
+			running = False
 		print('> Unknown command!')

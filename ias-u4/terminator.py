@@ -1,4 +1,5 @@
 # terminate all peers by pid
+import subprocess
 import json
 import os
 
@@ -8,6 +9,9 @@ def main():
     for pid in sub_procs.values():
         os.kill(int(pid), 9)
         print(f'killed: {pid}')
+    
+    # ensure to kill processes only once
+    subprocess.run(['rm', 'sub_procs.json'])
 
 # file run
 if __name__ == "__main__":
